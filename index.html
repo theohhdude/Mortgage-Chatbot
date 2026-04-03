@@ -3,73 +3,248 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomePath Mortgage | Smart Quote Assistant</title>
+  <title>Get Approved Mortgage Inc | Mortgage Lead Generation Site</title>
+  <meta
+    name="description"
+    content="Get Approved Mortgage Inc helps buyers and homeowners explore purchase and refinance options with a fast pre-qualification experience."
+  >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:opsz@9..40&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="page-shell">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Mortgage Lead Gen Demo</p>
-        <h1>Convert curious visitors into qualified mortgage leads.</h1>
-        <p class="hero-text">
-          This embedded assistant asks the right questions, adapts to purchase or refinance journeys,
-          and ends with a clean handoff your loan team can follow up on.
-        </p>
-        <div class="hero-metrics">
-          <article>
-            <strong>9-step flow</strong>
-            <span>Built to qualify without overwhelming</span>
-          </article>
-          <article>
-            <strong>Purchase + Refi</strong>
-            <span>Different prompts for different intent</span>
-          </article>
-          <article>
-            <strong>Lead-ready summary</strong>
-            <span>Names, timeline, budget, and credit snapshot</span>
-          </article>
+  <header class="site-header">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">GA</div>
+      <div>
+        <p class="brand-kicker">Mortgage Specialists</p>
+        <a href="#top" class="brand-name">Get Approved Mortgage Inc</a>
+      </div>
+    </div>
+
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#programs">Loan Programs</a>
+      <a href="#process">How It Works</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <a class="header-cta" href="#chatbot">Start Here</a>
+  </header>
+
+  <main id="top">
+    <section class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Fast Pre-Qualification For Real Borrowers</p>
+          <h1>Mortgage guidance that feels personal from the very first click.</h1>
+          <p class="hero-text">
+            Get Approved Mortgage Inc is built for lead generation with a high-converting mortgage funnel:
+            purchase and refinance messaging, trust-building sections, and a live qualification assistant
+            that captures the details your loan team actually needs.
+          </p>
+
+          <div class="hero-actions">
+            <a class="primary-button" href="#chatbot">Check My Options</a>
+            <a class="secondary-button" href="#programs">Explore Programs</a>
+          </div>
+
+          <div class="chatbot-promo">
+            <p class="promo-label">Why use the chatbot</p>
+            <h3>Start with a quick conversation instead of a cold mortgage form.</h3>
+            <p>
+              The assistant helps visitors talk through their goals naturally, then offers reply buttons when
+              they want an easier next step. It feels guided, not automated.
+            </p>
+          </div>
+
+          <div class="hero-proof">
+            <article>
+              <strong>Purchase Loans</strong>
+              <span>First-time buyers, move-up buyers, and investment scenarios</span>
+            </article>
+            <article>
+              <strong>Refinance Support</strong>
+              <span>Rate-and-term review, cash-out goals, and payment analysis</span>
+            </article>
+            <article>
+              <strong>Lead-Ready Intake</strong>
+              <span>Contact, timeline, credit range, equity or down payment, and more</span>
+            </article>
+          </div>
+
+          <div class="trust-bar" aria-label="Key trust signals">
+            <span>Responsive loan team</span>
+            <span>Clear next steps</span>
+            <span>Mobile-friendly intake</span>
+          </div>
         </div>
+
+        <aside id="chatbot" class="chatbot-panel" aria-label="Mortgage chatbot">
+          <div class="chatbot-header">
+            <div>
+              <p class="agent-label">Get Approved Concierge</p>
+              <h2>Answer a few questions and we will route your lead intelligently.</h2>
+            </div>
+            <span class="status-pill">2-minute intake</span>
+          </div>
+
+          <div class="chat-note">
+            Ask a question, type naturally, or tap a suggested reply. The prompts are there to guide the conversation,
+            not replace it.
+          </div>
+
+          <div id="chatWindow" class="chat-window" aria-live="polite"></div>
+
+          <div id="quickReplies" class="quick-replies" aria-label="Suggested replies"></div>
+
+          <form id="chatForm" class="chat-form">
+            <label class="sr-only" for="chatInput">Type your response</label>
+            <input
+              id="chatInput"
+              name="message"
+              type="text"
+              placeholder="Type your answer"
+              autocomplete="off"
+            >
+            <button type="submit">Send</button>
+          </form>
+
+          <aside id="leadSummary" class="lead-summary" hidden>
+            <div class="lead-summary-header">
+              <p>Lead Snapshot</p>
+              <span>Ready for follow-up</span>
+            </div>
+            <dl id="summaryFields"></dl>
+          </aside>
+        </aside>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <article>
+        <strong>Home Purchase</strong>
+        <p>Guide buyers from curiosity to conversation with a structured intake path.</p>
+      </article>
+      <article>
+        <strong>Refinance Leads</strong>
+        <p>Segment cash-out and rate-focused borrowers before your team ever picks up the phone.</p>
+      </article>
+      <article>
+        <strong>Conversion-Focused UX</strong>
+        <p>Clear messaging, visible trust cues, and direct calls to action across desktop and mobile.</p>
+      </article>
+    </section>
+
+    <section id="programs" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Loan Programs</p>
+        <h2>Show borrowers where they might fit before they bounce.</h2>
       </div>
 
-      <section class="chatbot-panel" aria-label="Mortgage chatbot">
-        <div class="chatbot-header">
-          <div>
-            <p class="agent-label">HomePath Assistant</p>
-            <h2>Pre-qualify in under 2 minutes</h2>
-          </div>
-          <span class="status-pill">Live demo</span>
-        </div>
+      <div class="program-grid">
+        <article class="program-card">
+          <h3>Conventional Loans</h3>
+          <p>Great for borrowers with solid credit, stable income, and a range of down payment options.</p>
+        </article>
+        <article class="program-card">
+          <h3>FHA Loans</h3>
+          <p>Useful for buyers who want a more accessible path into homeownership with flexible qualification.</p>
+        </article>
+        <article class="program-card">
+          <h3>VA Loans</h3>
+          <p>Highlight veteran-friendly benefits and route qualified borrowers toward specialized support.</p>
+        </article>
+        <article class="program-card">
+          <h3>Refinance Options</h3>
+          <p>Position payment reduction, term changes, and cash-out goals with a strong consultative tone.</p>
+        </article>
+      </div>
+    </section>
 
-        <div id="chatWindow" class="chat-window" aria-live="polite"></div>
+    <section id="process" class="content-section process-section">
+      <div class="section-heading">
+        <p class="eyebrow">How It Works</p>
+        <h2>A mortgage lead funnel that feels calm, clear, and worth finishing.</h2>
+      </div>
 
-        <div id="quickReplies" class="quick-replies" aria-label="Suggested replies"></div>
+      <div class="process-grid">
+        <article>
+          <span>01</span>
+          <h3>Borrower shares intent</h3>
+          <p>The chatbot detects whether the visitor is buying or refinancing and adjusts the path instantly.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>We qualify the basics</h3>
+          <p>Timeline, price range, credit estimate, and down payment or equity are captured without a giant form.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Your team gets context</h3>
+          <p>The final summary is ready for CRM delivery so loan officers can follow up with relevant talking points.</p>
+        </article>
+      </div>
+    </section>
 
-        <form id="chatForm" class="chat-form">
-          <label class="sr-only" for="chatInput">Type your response</label>
-          <input
-            id="chatInput"
-            name="message"
-            type="text"
-            placeholder="Type your answer here"
-            autocomplete="off"
-          >
-          <button type="submit">Send</button>
-        </form>
+    <section id="reviews" class="content-section review-section">
+      <div class="section-heading">
+        <p class="eyebrow">Why This Converts</p>
+        <h2>Visitors stay longer when the page earns trust early.</h2>
+      </div>
 
-        <aside id="leadSummary" class="lead-summary" hidden>
-          <div class="lead-summary-header">
-            <p>Qualified lead snapshot</p>
-            <span>Ready for CRM</span>
-          </div>
-          <dl id="summaryFields"></dl>
-        </aside>
-      </section>
+      <div class="review-grid">
+        <article class="review-card">
+          <p>"The path feels much less intimidating than a traditional mortgage application."</p>
+          <strong>First-time buyer journey</strong>
+        </article>
+        <article class="review-card">
+          <p>"I knew what kind of refinance conversation I was walking into before anyone called me."</p>
+          <strong>Cash-out refinance lead</strong>
+        </article>
+        <article class="review-card">
+          <p>"This format gives the loan team useful context instead of another generic contact form."</p>
+          <strong>Lead generation strategy</strong>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq" class="content-section faq-section">
+      <div class="section-heading">
+        <p class="eyebrow">FAQ</p>
+        <h2>Common questions borrowers ask before they raise a hand.</h2>
+      </div>
+
+      <div class="faq-list">
+        <article>
+          <h3>Will checking options hurt my credit?</h3>
+          <p>No hard-credit language is shown here. This experience is meant for initial lead capture and program fit conversations.</p>
+        </article>
+        <article>
+          <h3>Can this work for first-time buyers?</h3>
+          <p>Yes. The messaging and intake flow are especially helpful for buyers who need guidance and reassurance.</p>
+        </article>
+        <article>
+          <h3>Can the lead data go into a CRM?</h3>
+          <p>Yes. The summary panel is structured so it can be sent to a backend, CRM webhook, or intake automation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div>
+        <p class="eyebrow">Get Approved Mortgage Inc</p>
+        <h2>Turn traffic into qualified mortgage conversations.</h2>
+      </div>
+      <a class="primary-button" href="#chatbot">Start The Intake</a>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <p>Get Approved Mortgage Inc</p>
+    <p>This demo site is ready for branding updates, compliance language, and CRM integration.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

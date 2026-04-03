@@ -14,61 +14,50 @@ const lead = {
   downPayment: "",
   state: "",
   firstName: "",
-  contact: "",
-  notes: ""
+  contact: ""
 };
 
 const flow = [
   {
     key: "intent",
-    prompt: "Hi, I'm Ava. I can help you get matched with the right mortgage options. Are you buying a home or refinancing an existing one?",
-    replies: ["Buying a home", "Refinancing"],
-    normalize: (value) => {
-      const lower = value.toLowerCase();
-      if (lower.includes("buy")) {
-        return "Home purchase";
-      }
-      if (lower.includes("refi") || lower.includes("refinan")) {
-        return "Refinance";
-      }
-      return value;
-    }
+    prompt: "Welcome to Get Approved Mortgage Inc. Tell me what brings you in today. Are you thinking about buying a home, or does a refinance feel more likely?",
+    replies: ["Buy a home", "Refinance"]
   },
   {
     key: "loanType",
     prompt: () => lead.intent === "Refinance"
-      ? "What kind of refinance are you exploring today?"
-      : "What type of loan sounds closest to what you need?",
+      ? "Got it. What would you most like a refinance to do for you?"
+      : "That helps. What kind of mortgage guidance would be most useful right now?",
     replies: () => lead.intent === "Refinance"
-      ? ["Lower my rate", "Cash-out refinance", "Not sure yet"]
+      ? ["Lower my payment", "Cash out equity", "Shorten my term", "Not sure yet"]
       : ["Conventional", "FHA", "VA", "Not sure yet"]
   },
   {
     key: "priceRange",
     prompt: () => lead.intent === "Refinance"
-      ? "About how much is your current home worth?"
-      : "What price range are you targeting?",
+      ? "To help me frame the options, about how much do you think your home is worth today?"
+      : "What price range are you shopping in right now?",
     replies: () => lead.intent === "Refinance"
-      ? ["$300k-$450k", "$450k-$700k", "$700k+"]
-      : ["Under $350k", "$350k-$550k", "$550k-$850k", "$850k+"]
+      ? ["Under $350k", "$350k-$600k", "$600k-$900k", "$900k+"]
+      : ["Under $300k", "$300k-$500k", "$500k-$800k", "$800k+"]
   },
   {
     key: "timeline",
     prompt: () => lead.intent === "Refinance"
-      ? "How soon would you like to refinance if the numbers look right?"
-      : "When are you hoping to move forward?",
-    replies: ["ASAP", "30-60 days", "2-6 months", "Just researching"]
+      ? "If the numbers look good, how soon would you want to move forward?"
+      : "When would you ideally like to buy?",
+    replies: ["Immediately", "30-60 days", "2-6 months", "Just exploring"]
   },
   {
     key: "creditRange",
-    prompt: "What's your estimated credit score range?",
+    prompt: "Where would you estimate your credit score today? A rough range is totally fine.",
     replies: ["760+", "700-759", "640-699", "Below 640"]
   },
   {
     key: "downPayment",
     prompt: () => lead.intent === "Refinance"
-      ? "What best describes your current equity position?"
-      : "How much are you planning to put down?",
+      ? "And what best describes your equity position today?"
+      : "What are you thinking for down payment?",
     replies: () => lead.intent === "Refinance"
       ? ["20%+ equity", "10-20% equity", "Less than 10%", "Not sure"]
       : ["3-5%", "10-15%", "20%+", "Need guidance"]
@@ -80,15 +69,26 @@ const flow = [
   },
   {
     key: "firstName",
-    prompt: "Great. What's your first name?"
+    prompt: "Thanks. What should I call you?"
   },
   {
     key: "contact",
-    prompt: "What's the best email or phone number for a loan specialist to reach you?"
+    prompt: "Last step. What is the best phone number or email for a mortgage specialist to reach you?"
   }
 ];
 
 let stepIndex = 0;
+
+function normalizeIntent(value) {
+  const lower = value.toLowerCase();
+  if (lower.includes("buy")) {
+    return "Home purchase";
+  }
+  if (lower.includes("refi")) {
+    return "Refinance";
+  }
+  return value;
+}
 
 function addMessage(role, text) {
   const bubble = document.createElement("div");
@@ -96,18 +96,6 @@ function addMessage(role, text) {
   bubble.textContent = text;
   chatWindow.appendChild(bubble);
   chatWindow.scrollTop = chatWindow.scrollHeight;
-}
-
-function setReplies(options = []) {
-  quickReplies.innerHTML = "";
-
-  options.forEach((option) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = option;
-    button.addEventListener("click", () => submitAnswer(option));
-    quickReplies.appendChild(button);
-  });
 }
 
 function getCurrentStep() {
@@ -126,50 +114,52 @@ function getReplies(step) {
   return typeof step.replies === "function" ? step.replies() : step.replies;
 }
 
+function setReplies(options = []) {
+  quickReplies.innerHTML = "";
+
+  options.forEach((option) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = option;
+    button.addEventListener("click", () => submitAnswer(option));
+    quickReplies.appendChild(button);
+  });
+}
+
 function askCurrentStep() {
   const step = getCurrentStep();
   addMessage("bot", getPrompt(step));
   setReplies(getReplies(step));
 }
 
-function normalizeAnswer(step, answer) {
-  if (step.normalize) {
-    return step.normalize(answer.trim());
-  }
-  return answer.trim();
-}
-
 function buildRecommendation() {
-  const credit = lead.creditRange;
-  const intent = lead.intent;
-
-  if (intent === "Home purchase" && (credit === "760+" || credit === "700-759")) {
-    return "Strong candidate for conventional options with competitive pricing.";
+  if (lead.intent === "Refinance" && lead.loanType === "Cash out equity") {
+    return "Route to a cash-out conversation with equity, payment impact, and rate scenarios.";
   }
 
-  if (intent === "Home purchase" && credit === "640-699") {
-    return "Likely worth comparing FHA and flexible conventional programs.";
+  if (lead.intent === "Home purchase" && (lead.creditRange === "760+" || lead.creditRange === "700-759")) {
+    return "Strong purchase lead for conventional pricing review and next-step consultation.";
   }
 
-  if (intent === "Refinance" && lead.loanType === "Cash-out refinance") {
-    return "A cash-out specialist should review equity, LTV, and rate tradeoffs.";
+  if (lead.intent === "Home purchase" && lead.creditRange === "640-699") {
+    return "Good lead for FHA or flexible conventional comparisons with coaching on readiness.";
   }
 
-  return "A loan advisor should review program fit and next-best rate scenarios.";
+  return "Have a licensed mortgage specialist review program fit and outreach timing.";
 }
 
 function renderSummary() {
   const entries = [
-    ["Journey", lead.intent],
-    ["Program", lead.loanType],
-    ["Budget / Value", lead.priceRange],
+    ["Borrower path", lead.intent],
+    ["Program interest", lead.loanType],
+    ["Price or value", lead.priceRange],
     ["Timeline", lead.timeline],
-    ["Credit", lead.creditRange],
-    ["Down / Equity", lead.downPayment],
-    ["State", lead.state],
-    ["Name", lead.firstName],
-    ["Contact", lead.contact],
-    ["Next step", buildRecommendation()]
+    ["Credit range", lead.creditRange],
+    ["Down payment or equity", lead.downPayment],
+    ["Property state", lead.state],
+    ["First name", lead.firstName],
+    ["Best contact", lead.contact],
+    ["Suggested next step", buildRecommendation()]
   ];
 
   summaryFields.innerHTML = "";
@@ -178,6 +168,7 @@ function renderSummary() {
     const wrapper = document.createElement("div");
     const term = document.createElement("dt");
     const desc = document.createElement("dd");
+
     term.textContent = label;
     desc.textContent = value || "Not provided";
     wrapper.appendChild(term);
@@ -191,14 +182,14 @@ function renderSummary() {
 function finishFlow() {
   addMessage(
     "bot",
-    `${lead.firstName}, thanks. I've pulled together a lead summary and your loan team now has enough to follow up with context instead of a cold handoff.`
+    `${lead.firstName}, thanks. I have enough to create a strong lead summary for Get Approved Mortgage Inc.`
   );
   addMessage(
     "bot",
-    `${buildRecommendation()} If you wire this into a CRM, this is the moment to send the payload to your lead intake endpoint.`
+    `${buildRecommendation()} This is the point where you would post the lead to your CRM or notify your loan team.`
   );
-  setReplies(["Start over"]);
   renderSummary();
+  setReplies(["Start over"]);
 }
 
 function submitAnswer(rawAnswer) {
@@ -218,20 +209,18 @@ function submitAnswer(rawAnswer) {
   const step = getCurrentStep();
   addMessage("user", answer);
 
-  lead[step.key] = normalizeAnswer(step, answer);
+  lead[step.key] = step.key === "intent" ? normalizeIntent(answer) : answer;
   stepIndex += 1;
   chatInput.value = "";
 
   if (stepIndex >= flow.length) {
-    window.setTimeout(finishFlow, 350);
+    window.setTimeout(finishFlow, 320);
     return;
   }
 
-  const nextStep = getCurrentStep();
   window.setTimeout(() => {
-    addMessage("bot", getPrompt(nextStep));
-    setReplies(getReplies(nextStep));
-  }, 300);
+    askCurrentStep();
+  }, 280);
 }
 
 function resetFlow() {
