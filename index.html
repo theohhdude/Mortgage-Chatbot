@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomePath Mortgage | Smart Quote Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:opsz@9..40&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Mortgage Lead Gen Demo</p>
+        <h1>Convert curious visitors into qualified mortgage leads.</h1>
+        <p class="hero-text">
+          This embedded assistant asks the right questions, adapts to purchase or refinance journeys,
+          and ends with a clean handoff your loan team can follow up on.
+        </p>
+        <div class="hero-metrics">
+          <article>
+            <strong>9-step flow</strong>
+            <span>Built to qualify without overwhelming</span>
+          </article>
+          <article>
+            <strong>Purchase + Refi</strong>
+            <span>Different prompts for different intent</span>
+          </article>
+          <article>
+            <strong>Lead-ready summary</strong>
+            <span>Names, timeline, budget, and credit snapshot</span>
+          </article>
+        </div>
+      </div>
+
+      <section class="chatbot-panel" aria-label="Mortgage chatbot">
+        <div class="chatbot-header">
+          <div>
+            <p class="agent-label">HomePath Assistant</p>
+            <h2>Pre-qualify in under 2 minutes</h2>
+          </div>
+          <span class="status-pill">Live demo</span>
+        </div>
+
+        <div id="chatWindow" class="chat-window" aria-live="polite"></div>
+
+        <div id="quickReplies" class="quick-replies" aria-label="Suggested replies"></div>
+
+        <form id="chatForm" class="chat-form">
+          <label class="sr-only" for="chatInput">Type your response</label>
+          <input
+            id="chatInput"
+            name="message"
+            type="text"
+            placeholder="Type your answer here"
+            autocomplete="off"
+          >
+          <button type="submit">Send</button>
+        </form>
+
+        <aside id="leadSummary" class="lead-summary" hidden>
+          <div class="lead-summary-header">
+            <p>Qualified lead snapshot</p>
+            <span>Ready for CRM</span>
+          </div>
+          <dl id="summaryFields"></dl>
+        </aside>
+      </section>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
