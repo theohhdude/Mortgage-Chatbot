@@ -8,29 +8,15 @@
     name="description"
     content="Get Approved Mortgage Inc helps buyers and homeowners explore purchase and refinance options with a fast pre-qualification experience."
   >
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="brand-lockup">
-      <div class="brand-mark" aria-hidden="true">GA</div>
-      <div>
-        <p class="brand-kicker">Mortgage Specialists</p>
-        <a href="#top" class="brand-name">Get Approved Mortgage Inc</a>
-      </div>
+      <a href="#top" class="brand-logo-link" aria-label="Get Approved Mortgage Inc home">
+        <img class="brand-logo" src="assets/logo.png" alt="Get Approved Mortgage Inc logo">
+      </a>
     </div>
-
-    <nav class="site-nav" aria-label="Primary">
-      <a href="#programs">Loan Programs</a>
-      <a href="#process">How It Works</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-
-    <a class="header-cta" href="#chatbot">Start Here</a>
   </header>
 
   <main id="top">
@@ -38,37 +24,44 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Fast Pre-Qualification For Real Borrowers</p>
-          <h1>Mortgage guidance that feels personal from the very first click.</h1>
+          <h1>Clear mortgage guidance for buyers and homeowners who want real answers fast.</h1>
           <p class="hero-text">
-            Get Approved Mortgage Inc is built for lead generation with a high-converting mortgage funnel:
-            purchase and refinance messaging, trust-building sections, and a live qualification assistant
-            that captures the details your loan team actually needs.
+            Get Approved Mortgage, Inc. offers personalized mortgage solutions, fast customized quotes, and service
+            with integrity. Whether someone is buying a first home, refinancing to improve terms, or comparing loan
+            options, this page is built to guide them clearly toward the right next step.
           </p>
 
           <div class="hero-actions">
-            <a class="primary-button" href="#chatbot">Check My Options</a>
+            <a class="primary-button js-chat-jump" href="#chatForm">Check My Options</a>
             <a class="secondary-button" href="#programs">Explore Programs</a>
+          </div>
+
+          <div class="hero-banner">
+            <img src="assets/hero.jpg" alt="Happy family in front of a home">
           </div>
 
           <div class="chatbot-promo">
             <p class="promo-label">Why use the chatbot</p>
-            <h3>Start with a quick conversation instead of a cold mortgage form.</h3>
+            <h3>Start with a short conversation instead of filling out a cold mortgage form.</h3>
             <p>
-              The assistant helps visitors talk through their goals naturally, then offers reply buttons when
-              they want an easier next step. It feels guided, not automated.
+              The assistant helps borrowers share whether they are purchasing or refinancing, estimate budget and
+              credit, and understand what programs may fit before speaking with a licensed mortgage specialist.
             </p>
           </div>
 
           <div class="hero-proof">
             <article>
+              <img class="proof-icon" src="assets/purchase.png" alt="" aria-hidden="true">
               <strong>Purchase Loans</strong>
               <span>First-time buyers, move-up buyers, and investment scenarios</span>
             </article>
             <article>
+              <img class="proof-icon" src="assets/refinance.png" alt="" aria-hidden="true">
               <strong>Refinance Support</strong>
               <span>Rate-and-term review, cash-out goals, and payment analysis</span>
             </article>
             <article>
+              <img class="proof-icon" src="assets/loan-options.png" alt="" aria-hidden="true">
               <strong>Lead-Ready Intake</strong>
               <span>Contact, timeline, credit range, equity or down payment, and more</span>
             </article>
@@ -85,14 +78,8 @@
           <div class="chatbot-header">
             <div>
               <p class="agent-label">Get Approved Concierge</p>
-              <h2>Answer a few questions and we will route your lead intelligently.</h2>
+              <h2>To get started, use the Get Approved Concierge to answer a few questions so we can better assist you.</h2>
             </div>
-            <span class="status-pill">2-minute intake</span>
-          </div>
-
-          <div class="chat-note">
-            Ask a question, type naturally, or tap a suggested reply. The prompts are there to guide the conversation,
-            not replace it.
           </div>
 
           <div id="chatWindow" class="chat-window" aria-live="polite"></div>
@@ -101,13 +88,19 @@
 
           <form id="chatForm" class="chat-form">
             <label class="sr-only" for="chatInput">Type your response</label>
+            <label class="sr-only" for="stateSelect">Select a state</label>
+            <select id="stateSelect" class="state-select" hidden>
+              <option value="">Select a state</option>
+            </select>
             <input
               id="chatInput"
               name="message"
               type="text"
               placeholder="Type your answer"
-              autocomplete="off"
+              list="stateOptions"
+              autocomplete="name"
             >
+            <datalist id="stateOptions"></datalist>
             <button type="submit">Send</button>
           </form>
 
@@ -124,41 +117,40 @@
 
     <section class="stats-section">
       <article>
-        <strong>Home Purchase</strong>
-        <p>Guide buyers from curiosity to conversation with a structured intake path.</p>
+        <strong>Homebuying Guidance</strong>
+        <p>Support first-time buyers, move-up buyers, luxury borrowers, and investors with a simpler path toward pre-qualification.</p>
       </article>
       <article>
-        <strong>Refinance Leads</strong>
-        <p>Segment cash-out and rate-focused borrowers before your team ever picks up the phone.</p>
+        <strong>Refinance Support</strong>
+        <p>Help homeowners compare lower-rate, lower-payment, cash-out, and term-change scenarios with more confidence.</p>
       </article>
       <article>
-        <strong>Conversion-Focused UX</strong>
-        <p>Clear messaging, visible trust cues, and direct calls to action across desktop and mobile.</p>
+        <strong>Loan Options</strong>
+        <p>Introduce the programs borrowers ask about most, then route them to a conversation that matches their needs.</p>
       </article>
     </section>
 
     <section id="programs" class="content-section">
       <div class="section-heading">
         <p class="eyebrow">Loan Programs</p>
-        <h2>Show borrowers where they might fit before they bounce.</h2>
       </div>
 
       <div class="program-grid">
         <article class="program-card">
-          <h3>Conventional Loans</h3>
-          <p>Great for borrowers with solid credit, stable income, and a range of down payment options.</p>
+          <h3>30-Year Fixed</h3>
+          <p>A steady long-term option with predictable monthly payments that can work well for borrowers planning to stay put.</p>
         </article>
         <article class="program-card">
-          <h3>FHA Loans</h3>
-          <p>Useful for buyers who want a more accessible path into homeownership with flexible qualification.</p>
+          <h3>15-Year Fixed</h3>
+          <p>A faster payoff path for borrowers who want to build equity sooner and reduce interest paid over the life of the loan.</p>
         </article>
         <article class="program-card">
-          <h3>VA Loans</h3>
-          <p>Highlight veteran-friendly benefits and route qualified borrowers toward specialized support.</p>
+          <h3>FHA, VA, and Jumbo</h3>
+          <p>Flexible loan paths for first-time buyers, eligible veterans, and borrowers shopping above conforming loan limits.</p>
         </article>
         <article class="program-card">
-          <h3>Refinance Options</h3>
-          <p>Position payment reduction, term changes, and cash-out goals with a strong consultative tone.</p>
+          <h3>ARM and Specialty Options</h3>
+          <p>Adjustable-rate and specialty products can help borrowers balance payment flexibility, property goals, and timing.</p>
         </article>
       </div>
     </section>
@@ -166,68 +158,90 @@
     <section id="process" class="content-section process-section">
       <div class="section-heading">
         <p class="eyebrow">How It Works</p>
-        <h2>A mortgage lead funnel that feels calm, clear, and worth finishing.</h2>
       </div>
 
       <div class="process-grid">
         <article>
           <span>01</span>
-          <h3>Borrower shares intent</h3>
-          <p>The chatbot detects whether the visitor is buying or refinancing and adjusts the path instantly.</p>
+          <h3>Start with pre-qualification</h3>
+          <p>Borrowers can begin by sharing basic income, asset, and liability details so a licensed loan originator can frame affordability.</p>
         </article>
         <article>
           <span>02</span>
-          <h3>We qualify the basics</h3>
-          <p>Timeline, price range, credit estimate, and down payment or equity are captured without a giant form.</p>
+          <h3>Compare options clearly</h3>
+          <p>Purchase and refinance visitors can discuss rate, term, down payment, equity position, and program fit without a giant form.</p>
         </article>
         <article>
           <span>03</span>
-          <h3>Your team gets context</h3>
-          <p>The final summary is ready for CRM delivery so loan officers can follow up with relevant talking points.</p>
+          <h3>Move toward approval</h3>
+          <p>Once the basics are captured, the lead summary gives your team the context needed to continue toward pre-approval and next steps.</p>
         </article>
       </div>
     </section>
 
     <section id="reviews" class="content-section review-section">
       <div class="section-heading">
-        <p class="eyebrow">Why This Converts</p>
-        <h2>Visitors stay longer when the page earns trust early.</h2>
+        <p class="eyebrow">Our Values</p>
       </div>
 
       <div class="review-grid">
         <article class="review-card">
-          <p>"The path feels much less intimidating than a traditional mortgage application."</p>
-          <strong>First-time buyer journey</strong>
+          <p>Get Approved Mortgage, Inc. positions itself around exceptional care, expert guidance, and a simpler mortgage experience.</p>
+          <strong>Responsibility</strong>
         </article>
         <article class="review-card">
-          <p>"I knew what kind of refinance conversation I was walking into before anyone called me."</p>
-          <strong>Cash-out refinance lead</strong>
+          <p>The company emphasizes ethical standards, transparency, and fairness in the way it serves borrowers.</p>
+          <strong>Ethics and Integrity</strong>
         </article>
         <article class="review-card">
-          <p>"This format gives the loan team useful context instead of another generic contact form."</p>
-          <strong>Lead generation strategy</strong>
+          <p>Customer care is framed as timely responses, education, and support that helps borrowers move with confidence.</p>
+          <strong>Customer Care</strong>
         </article>
       </div>
     </section>
 
     <section id="faq" class="content-section faq-section">
       <div class="section-heading">
-        <p class="eyebrow">FAQ</p>
-        <h2>Common questions borrowers ask before they raise a hand.</h2>
+        <p class="eyebrow">Borrower Basics</p>
       </div>
 
       <div class="faq-list">
         <article>
-          <h3>Will checking options hurt my credit?</h3>
-          <p>No hard-credit language is shown here. This experience is meant for initial lead capture and program fit conversations.</p>
+          <h3>Pre-Qualification vs. Pre-Approval</h3>
+          <p>Pre-qualification helps estimate borrowing ability from the information a customer provides, while pre-approval is a stronger lender commitment after review and verification.</p>
         </article>
         <article>
-          <h3>Can this work for first-time buyers?</h3>
-          <p>Yes. The messaging and intake flow are especially helpful for buyers who need guidance and reassurance.</p>
+          <h3>Refinance Benefits</h3>
+          <p>Refinancing may help with rate reduction, monthly payment changes, debt consolidation, fixed-rate predictability, or changing the loan term.</p>
         </article>
         <article>
-          <h3>Can the lead data go into a CRM?</h3>
-          <p>Yes. The summary panel is structured so it can be sent to a backend, CRM webhook, or intake automation.</p>
+          <h3>Getting Ready</h3>
+          <p>Borrowers are encouraged to review credit, estimate housing costs, gather documentation, and speak with a licensed mortgage professional early.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section contact-section">
+      <div class="section-heading">
+        <p class="eyebrow">Contact & Licensing</p>
+      </div>
+
+      <div class="contact-grid">
+        <article class="contact-card">
+          <h3>Get Approved Mortgage, Inc.</h3>
+          <p>2821 Glenwood Ave<br>Rockford, Illinois 61101</p>
+          <p>T 888-777-2579<br>F 888-358-2440<br>info@getapproved.mortgage</p>
+          <p>For licensing information, visit nmlsconsumeraccess.org.</p>
+        </article>
+        <article class="contact-card">
+          <h3>Compliance</h3>
+          <p>NMLS#1575396 | Fair Lender | Fair Housing</p>
+          <p>Illinois License MB.6761220. Regulated by the Illinois Department of Financial and Professional Regulation, Division of Banking.</p>
+          <p>Additional state licensing references on the live site include Washington disclosures.</p>
+        </article>
+        <article class="contact-card">
+          <h3>Connect</h3>
+          <p><a href="https://www.facebook.com/GetApprovedMortgageInc">Facebook</a><br><a href="https://www.linkedin.com/company/getapprovedmortgageinc">LinkedIn</a></p>
         </article>
       </div>
     </section>
@@ -235,17 +249,18 @@
     <section class="final-cta">
       <div>
         <p class="eyebrow">Get Approved Mortgage Inc</p>
-        <h2>Turn traffic into qualified mortgage conversations.</h2>
+        <h2>Apply now for a better mortgage experience through Get Approved Mortgage, Inc.</h2>
       </div>
-      <a class="primary-button" href="#chatbot">Start The Intake</a>
+      <a class="primary-button js-chat-jump" href="#chatForm">Start The Intake</a>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>Get Approved Mortgage Inc</p>
-    <p>This demo site is ready for branding updates, compliance language, and CRM integration.</p>
+    <p>Get Approved Mortgage, Inc. | NMLS#1575396 | 2821 Glenwood Ave, Rockford, IL 61101</p>
+    <p>Phone 888-777-2579 | Email info@getapproved.mortgage | Illinois License MB.6761220</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
 </html>
+

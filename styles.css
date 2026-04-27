@@ -21,19 +21,28 @@
   --content-width: 1240px;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  min-width: 0;
 }
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   color: var(--text);
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 26%),
     radial-gradient(circle at right 20%, rgba(13, 94, 166, 0.16), transparent 24%),
@@ -44,6 +53,7 @@ a {
   color: inherit;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  overflow-wrap: anywhere;
 }
 
 button,
@@ -53,8 +63,17 @@ select {
   font: inherit;
 }
 
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
 main {
   padding: 0 20px 56px;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
 }
 
 .site-header,
@@ -63,43 +82,51 @@ main {
 .content-section,
 .final-cta,
 .site-footer {
-  max-width: var(--content-width);
+  max-width: min(var(--content-width), 100%);
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
+  min-width: 0;
 }
 
 .site-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 20px;
+  justify-content: center;
+  padding: 16px 20px;
   position: sticky;
   top: 0;
   z-index: 10;
   backdrop-filter: blur(16px);
+  overflow-x: clip;
 }
 
 .brand-lockup {
   display: flex;
   align-items: center;
-  gap: 14px;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
 }
 
-.brand-mark {
-  width: 54px;
-  height: 54px;
-  display: grid;
-  place-items: center;
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-deep) 100%);
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  box-shadow: var(--shadow);
+.brand-logo-link {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  min-height: 88px;
+  overflow: hidden;
 }
 
-.brand-kicker,
+.brand-logo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 104px;
+  object-fit: contain;
+  object-position: center;
+}
+
 .eyebrow,
 .agent-label,
 .lead-summary-header p {
@@ -111,24 +138,6 @@ main {
   color: var(--primary-deep);
 }
 
-.brand-name {
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.site-nav {
-  display: flex;
-  gap: 22px;
-  color: var(--muted);
-}
-
-.site-nav a {
-  white-space: nowrap;
-}
-
-.site-nav a:hover,
-.site-nav a:focus-visible,
-.brand-name:hover,
 .header-cta:hover,
 .primary-button:hover,
 .secondary-button:hover {
@@ -151,11 +160,19 @@ main {
 }
 
 .header-cta {
-  padding: 14px 18px;
+  min-height: 56px;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .hero-section {
   padding: 18px 0 30px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .hero-grid {
@@ -165,18 +182,31 @@ main {
   align-items: start;
 }
 
+.hero-grid > *,
+.stats-section > *,
+.program-grid > *,
+.process-grid > *,
+.review-grid > *,
+.faq-list > *,
+.contact-grid > * {
+  min-width: 0;
+}
+
 .hero-copy,
 .chatbot-panel,
 .stats-section article,
 .program-card,
 .review-card,
 .faq-list article,
+.contact-card,
 .final-cta {
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background: var(--surface);
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 100%;
 }
 
 .hero-copy {
@@ -204,19 +234,19 @@ h3 {
 
 h1,
 h2 {
-  font-family: "Instrument Serif", serif;
+  font-family: "Times New Roman", Times, serif;
   line-height: 0.98;
 }
 
 h1 {
   font-size: clamp(3.4rem, 5vw, 6.1rem);
-  max-width: 10.5ch;
+  max-width: 15ch;
   margin-top: 16px;
 }
 
 h2 {
   font-size: clamp(2.2rem, 3vw, 3.4rem);
-  max-width: 14ch;
+  max-width: 24ch;
 }
 
 h3 {
@@ -238,7 +268,7 @@ h3 {
 }
 
 .hero-text {
-  max-width: 58ch;
+  max-width: 72ch;
   font-size: 1.08rem;
   line-height: 1.8;
   margin: 24px 0 30px;
@@ -251,8 +281,23 @@ h3 {
   margin-bottom: 28px;
 }
 
+.hero-banner {
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.hero-banner img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
 .chatbot-promo {
-  max-width: 34rem;
+  max-width: 44rem;
   margin-bottom: 30px;
   padding: 22px 24px;
   border-radius: var(--radius-lg);
@@ -277,7 +322,14 @@ h3 {
 
 .primary-button,
 .secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
   padding: 15px 22px;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
 }
 
 .secondary-button {
@@ -303,6 +355,13 @@ h3 {
   padding: 18px;
 }
 
+.proof-icon {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 12px;
+}
+
 .hero-proof strong,
 .stats-section strong {
   display: block;
@@ -317,58 +376,77 @@ h3 {
 }
 
 .trust-bar span {
+  max-width: 100%;
   padding: 10px 14px;
   border-radius: 999px;
   background: rgba(13, 94, 166, 0.08);
   color: var(--primary-deep);
   font-size: 0.92rem;
+  overflow-wrap: anywhere;
 }
 
 .chatbot-panel {
-  padding: 22px;
-  min-height: 700px;
-  max-width: 460px;
+  padding: 20px;
+  min-height: auto;
+  max-width: min(460px, 100%);
   justify-self: end;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatbot-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 16px;
-  align-items: flex-start;
-  margin-bottom: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-top: 8px;
+  text-align: center;
+}
+
+.chatbot-header > div {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+}
+
+.chatbot-header h2 {
+  max-width: min(100%, 34rem);
+  font-size: clamp(1.42rem, 2vw, 1.95rem);
+  line-height: 1.16;
+  margin-top: 14px;
 }
 
 .chat-note {
-  padding: 14px 16px;
-  margin-bottom: 14px;
-  line-height: 1.6;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  line-height: 1.45;
 }
 
 .status-pill {
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 12px 18px;
   background: rgba(13, 94, 166, 0.08);
   color: var(--primary-deep);
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   font-weight: 700;
 }
 
 .chat-window {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  min-height: 320px;
-  max-height: 320px;
+  gap: 12px;
+  min-height: 220px;
+  max-height: 220px;
   overflow-y: auto;
-  padding: 12px 4px 14px;
+  padding: 8px 4px 10px;
 }
 
 .message {
   max-width: 86%;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-radius: 18px;
-  line-height: 1.5;
+  line-height: 1.4;
   animation: rise 260ms ease-out;
 }
 
@@ -388,25 +466,51 @@ h3 {
 .quick-replies {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 10px 0 16px;
-  min-height: 42px;
+  gap: 8px;
+  margin: 8px 0 12px;
+  min-height: 36px;
 }
 
 .quick-replies button {
   border: 0;
   border-radius: 999px;
-  min-height: 44px;
-  padding: 10px 14px;
+  flex: 1 1 130px;
+  max-width: 100%;
+  min-height: 38px;
+  padding: 8px 12px;
   background: var(--accent-soft);
   color: #8f4f10;
   font-weight: 700;
+  white-space: normal;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition: transform 120ms ease, background 120ms ease;
 }
 
+.quick-replies .back-reply {
+  background: rgba(13, 94, 166, 0.09);
+  color: var(--primary-deep);
+}
+
+.loan-application-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 58px;
+  padding: 14px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent) 0%, #cf6f13 100%);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 14px 28px rgba(204, 111, 18, 0.22);
+}
+
 .quick-replies button:hover,
 .quick-replies button:focus-visible,
+.loan-application-button:hover,
+.loan-application-button:focus-visible,
 .header-cta:hover,
 .primary-button:hover,
 .secondary-button:hover {
@@ -417,18 +521,37 @@ h3 {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
+  margin-top: auto;
+  scroll-margin-top: 88px;
 }
 
 .chat-form input {
   border: 1px solid var(--line);
   background: var(--surface-strong);
   border-radius: 16px;
-  min-height: 52px;
-  padding: 16px 18px;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 16px;
   color: var(--text);
 }
 
-.chat-form input:focus-visible {
+.state-select {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 16px;
+  color: var(--text);
+  background: var(--surface-strong);
+}
+
+.state-select[hidden] {
+  display: none;
+}
+
+.chat-form input:focus-visible,
+.state-select:focus-visible {
   outline: 2px solid rgba(13, 94, 166, 0.24);
   border-color: rgba(13, 94, 166, 0.28);
 }
@@ -436,8 +559,8 @@ h3 {
 .chat-form button {
   border: 0;
   border-radius: 16px;
-  min-height: 52px;
-  padding: 0 22px;
+  min-height: 46px;
+  padding: 0 18px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-deep) 100%);
   color: white;
   font-weight: 700;
@@ -514,8 +637,13 @@ h3 {
   margin-bottom: 22px;
 }
 
+.section-heading h2 {
+  max-width: 30ch;
+}
+
 .program-grid,
-.review-grid {
+.review-grid,
+.contact-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
@@ -523,12 +651,14 @@ h3 {
 
 .program-card,
 .review-card,
+.contact-card,
 .faq-list article {
   background: rgba(255, 255, 255, 0.72);
 }
 
 .program-card p,
 .review-card p,
+.contact-card p,
 .faq-list p,
 .stats-section p {
   margin: 10px 0 0;
@@ -579,6 +709,18 @@ h3 {
   color: var(--primary-deep);
 }
 
+.contact-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.contact-card {
+  padding: 24px;
+}
+
+.contact-card a {
+  color: var(--primary-deep);
+}
+
 .faq-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -586,6 +728,7 @@ h3 {
 }
 
 .final-cta {
+  max-width: var(--content-width);
   padding: 32px;
   display: flex;
   justify-content: space-between;
@@ -596,6 +739,18 @@ h3 {
     rgba(255, 255, 255, 0.8);
 }
 
+.final-cta h2 {
+  max-width: 34ch;
+  line-height: 1.08;
+  text-align: center;
+}
+
+.final-cta > div {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
 .site-footer {
   display: flex;
   justify-content: space-between;
@@ -603,6 +758,13 @@ h3 {
   padding: 28px 20px 12px;
   color: var(--muted);
   font-size: 0.94rem;
+  overflow-wrap: anywhere;
+}
+
+.site-footer p {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .sr-only {
@@ -628,13 +790,77 @@ h3 {
   }
 }
 
+@media (min-width: 1121px) {
+  .hero-section {
+    padding-top: 10px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: calc(100vw - 56px);
+  }
+
+  .chatbot-panel {
+    order: 1;
+    max-width: 100%;
+    justify-self: stretch;
+    padding: 28px 34px;
+  }
+
+  .chatbot-header h2 {
+    max-width: min(100%, 46rem);
+  }
+
+  .chat-window {
+    min-height: 240px;
+    max-height: 240px;
+  }
+
+  .quick-replies button {
+    flex-grow: 0;
+  }
+
+  .chat-form {
+    grid-template-columns: minmax(0, 1fr) 180px;
+  }
+
+  .hero-copy {
+    order: 2;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-copy h1,
+  .hero-copy h2,
+  .hero-copy .hero-text,
+  .hero-copy .chatbot-promo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-copy h1 {
+    max-width: 24ch;
+  }
+
+  .hero-copy .hero-text {
+    max-width: 96ch;
+  }
+
+  .hero-actions,
+  .trust-bar {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 1120px) {
   .hero-grid,
   .stats-section,
   .program-grid,
   .process-grid,
   .review-grid,
-  .faq-list {
+  .faq-list,
+  .contact-grid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -660,45 +886,69 @@ h3 {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
+  .hero-section {
+    padding-top: 0;
+  }
+
   main {
-    padding: 0 12px 36px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero-copy {
+    padding: 30px;
+  }
+
+  .stats-section,
+  .program-grid,
+  .process-grid,
+  .review-grid,
+  .faq-list,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chatbot-panel {
+    position: relative;
+    min-height: auto;
+    justify-self: stretch;
+  }
+
+  .chat-window {
+    min-height: 200px;
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 760px) {
+  body {
+    background-attachment: fixed;
+  }
+
+  main {
+    padding: 0 10px calc(34px + env(safe-area-inset-bottom));
   }
 
   .site-header {
     position: static;
-    gap: 12px;
-    padding: 14px 12px 10px;
-  }
-
-  .site-nav {
-    width: 100%;
-    overflow-x: auto;
-    gap: 10px;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-  }
-
-  .site-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .site-nav a {
-    padding: 10px 12px;
-    border-radius: 999px;
-    background: rgba(13, 94, 166, 0.08);
+    padding: 10px;
   }
 
   .brand-lockup {
     width: 100%;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: center;
   }
 
-  .brand-mark {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
+  .brand-logo-link {
+    min-height: 64px;
+    justify-content: center;
+  }
+
+  .brand-logo {
+    width: min(720px, 100%);
+    max-height: 82px;
+    object-position: center;
   }
 
   .hero-copy,
@@ -707,26 +957,40 @@ h3 {
   .program-card,
   .review-card,
   .faq-list article,
+  .contact-card,
   .final-cta {
-    border-radius: 24px;
+    border-radius: 20px;
   }
 
   h1 {
-    font-size: clamp(2.7rem, 12vw, 3.4rem);
-    max-width: 9ch;
+    font-size: clamp(2.15rem, 10.5vw, 3rem);
+    max-width: 14ch;
+    line-height: 1.02;
   }
 
   h2 {
-    font-size: clamp(1.9rem, 8vw, 2.4rem);
-    max-width: 12ch;
+    font-size: clamp(1.55rem, 7vw, 2.1rem);
+    max-width: 20ch;
+    line-height: 1.05;
   }
 
   .hero-section {
     padding-top: 8px;
   }
 
+  .hero-grid {
+    min-height: calc(100svh - 92px);
+    align-items: stretch;
+  }
+
+  @supports (height: 100dvh) {
+    .hero-grid {
+      min-height: calc(100dvh - 92px);
+    }
+  }
+
   .hero-copy {
-    padding: 22px 18px;
+    padding: 20px 16px;
     order: 2;
   }
 
@@ -747,8 +1011,16 @@ h3 {
   }
 
   .chatbot-promo {
-    padding: 18px;
-    margin-bottom: 22px;
+    padding: 16px;
+    margin-bottom: 18px;
+  }
+
+  .hero-banner {
+    margin-bottom: 20px;
+  }
+
+  .hero-banner img {
+    height: 160px;
   }
 
   .hero-proof,
@@ -757,26 +1029,45 @@ h3 {
   .process-grid,
   .review-grid,
   .faq-list,
+  .contact-grid,
   .lead-summary dl {
     grid-template-columns: 1fr;
   }
 
   .chatbot-panel {
     order: 1;
-    min-height: auto;
-    padding: 16px;
+    min-height: calc(100svh - 92px);
+    padding: 14px;
     margin-bottom: 12px;
+    justify-content: stretch;
+  }
+
+  @supports (height: 100dvh) {
+    .chatbot-panel {
+      min-height: calc(100dvh - 92px);
+    }
   }
 
   .chat-window {
-    min-height: 260px;
-    max-height: 260px;
+    flex: 1 1 auto;
+    min-height: 120px;
+    max-height: none;
   }
 
   .chatbot-header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-top: 10px;
+    text-align: center;
+  }
+
+  .chatbot-header h2 {
+    font-size: clamp(1.14rem, 5vw, 1.46rem);
+    max-width: min(100%, 22rem);
+    line-height: 1.2;
+    margin-top: 12px;
   }
 
   .message {
@@ -786,10 +1077,14 @@ h3 {
 
   .chat-form {
     grid-template-columns: 1fr;
+    position: sticky;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    z-index: 2;
+    padding-top: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.94) 28%);
   }
 
   .chat-form button,
-  .header-cta,
   .primary-button,
   .secondary-button {
     width: 100%;
@@ -803,6 +1098,21 @@ h3 {
     min-height: 46px;
   }
 
+  .quick-replies button {
+    flex-basis: calc(50% - 8px);
+  }
+
+  .header-cta {
+    width: auto;
+    min-height: 46px;
+    padding: 0 18px;
+    align-self: flex-start;
+  }
+
+  .chat-form {
+    scroll-margin-top: 72px;
+  }
+
   .lead-summary {
     padding: 16px;
   }
@@ -812,39 +1122,95 @@ h3 {
   }
 
   .site-footer {
-    padding: 20px 8px 4px;
-    font-size: 0.9rem;
+    padding: 18px 6px 4px;
+    font-size: 0.86rem;
+    line-height: 1.45;
   }
 }
 
 @media (max-width: 420px) {
   main {
-    padding: 0 10px 28px;
+    padding: 0 8px calc(28px + env(safe-area-inset-bottom));
   }
 
   .site-header {
-    padding: 12px 10px 8px;
+    padding: 10px 8px 6px;
   }
 
   .hero-copy {
-    padding: 20px 16px;
+    padding: 18px 14px;
   }
 
   .chatbot-panel {
-    padding: 14px;
+    padding: 12px;
   }
 
   .chat-window {
-    min-height: 240px;
-    max-height: 240px;
+    min-height: 110px;
+    max-height: none;
+  }
+
+  .brand-logo {
+    width: min(520px, 100%);
+    max-height: 62px;
+  }
+
+  .hero-banner img {
+    height: 140px;
   }
 
   .hero-proof article,
   .stats-section article,
   .program-card,
   .review-card,
+  .contact-card,
   .faq-list article,
   .process-grid article {
-    padding: 18px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 390px) {
+  .brand-logo {
+    max-height: 58px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 10vw, 2.55rem);
+  }
+
+  .hero-text,
+  .chatbot-promo p:last-child,
+  .stats-section p,
+  .program-card p,
+  .review-card p,
+  .contact-card p,
+  .faq-list p,
+  .process-grid p {
+    font-size: 0.94rem;
+  }
+
+  .chat-window {
+    min-height: 96px;
+    max-height: none;
+  }
+}
+
+@media (max-width: 360px) {
+  main {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .hero-copy,
+  .chatbot-panel,
+  .final-cta {
+    border-radius: 16px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
