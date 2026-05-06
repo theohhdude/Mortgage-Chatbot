@@ -199,6 +199,7 @@ main {
 .review-card,
 .faq-list article,
 .contact-card,
+.license-card,
 .final-cta {
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
@@ -652,6 +653,7 @@ h3 {
 .program-card,
 .review-card,
 .contact-card,
+.license-card,
 .faq-list article {
   background: rgba(255, 255, 255, 0.72);
 }
@@ -717,8 +719,239 @@ h3 {
   padding: 24px;
 }
 
-.contact-card a {
+.contact-card a,
+.site-footer a {
   color: var(--primary-deep);
+}
+
+.license-page {
+  padding-top: 18px;
+}
+
+.license-hero {
+  max-width: min(var(--content-width), 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 0.82fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.license-hero-copy,
+.license-brand-panel,
+.license-card,
+.brand-asset-grid article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.license-hero-copy {
+  padding: 48px;
+}
+
+.license-hero-copy h1 {
+  max-width: 12ch;
+}
+
+.license-hero-copy p:not(.eyebrow) {
+  margin: 22px 0 28px;
+  max-width: 58ch;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+
+.license-brand-panel {
+  padding: 34px;
+  display: grid;
+  align-content: center;
+  gap: 24px;
+}
+
+.license-brand-panel img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+}
+
+.license-brand-panel dl {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.license-brand-panel div,
+.brand-asset-grid article {
+  display: grid;
+  gap: 6px;
+}
+
+.license-brand-panel dt,
+.brand-asset-grid span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.license-brand-panel dd {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.license-grid,
+.brand-asset-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.license-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.license-card {
+  padding: 24px;
+}
+
+.license-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.license-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.license-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+}
+
+.license-table th,
+.license-table td {
+  padding: 18px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.license-table th {
+  color: var(--primary-deep);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(207, 227, 248, 0.42);
+}
+
+.license-table td {
+  color: var(--muted);
+}
+
+.license-table td:first-child,
+.license-table td:nth-child(2) {
+  color: var(--text);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.license-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.brand-asset-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.brand-asset-grid article {
+  padding: 22px;
+}
+
+.brand-asset-grid strong {
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.policy-page {
+  padding-top: 18px;
+}
+
+.policy-hero,
+.policy-content {
+  max-width: min(980px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.policy-hero {
+  padding: 48px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.policy-hero h1 {
+  max-width: 12ch;
+  margin-top: 16px;
+}
+
+.policy-hero p:not(.eyebrow) {
+  margin: 20px 0 26px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.policy-content {
+  margin-top: 28px;
+  padding: 42px 48px;
+}
+
+.policy-content h2 {
+  max-width: none;
+  margin-top: 34px;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 1.15;
+}
+
+.policy-content h2:first-of-type {
+  margin-top: 0;
+}
+
+.policy-content p,
+.policy-content li {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.policy-content p {
+  margin: 16px 0 0;
+}
+
+.policy-content ul {
+  margin: 16px 0 0;
+  padding-left: 22px;
+}
+
+.policy-content strong {
+  color: var(--text);
 }
 
 .faq-list {
@@ -860,11 +1093,18 @@ h3 {
   .process-grid,
   .review-grid,
   .faq-list,
-  .contact-grid {
+  .contact-grid,
+  .license-hero,
+  .license-grid,
+  .brand-asset-grid {
     grid-template-columns: 1fr 1fr;
   }
 
   .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .license-hero {
     grid-template-columns: 1fr;
   }
 
@@ -905,8 +1145,17 @@ h3 {
   .process-grid,
   .review-grid,
   .faq-list,
-  .contact-grid {
+  .contact-grid,
+  .license-grid,
+  .brand-asset-grid {
     grid-template-columns: 1fr;
+  }
+
+  .license-hero-copy,
+  .license-brand-panel,
+  .policy-hero,
+  .policy-content {
+    padding: 30px;
   }
 
   .chatbot-panel {
@@ -958,6 +1207,8 @@ h3 {
   .review-card,
   .faq-list article,
   .contact-card,
+  .license-card,
+  .brand-asset-grid article,
   .final-cta {
     border-radius: 20px;
   }
@@ -1030,6 +1281,8 @@ h3 {
   .review-grid,
   .faq-list,
   .contact-grid,
+  .license-grid,
+  .brand-asset-grid,
   .lead-summary dl {
     grid-template-columns: 1fr;
   }
@@ -1141,6 +1394,13 @@ h3 {
     padding: 18px 14px;
   }
 
+  .license-hero-copy,
+  .license-brand-panel,
+  .policy-hero,
+  .policy-content {
+    padding: 18px 14px;
+  }
+
   .chatbot-panel {
     padding: 12px;
   }
@@ -1164,6 +1424,8 @@ h3 {
   .program-card,
   .review-card,
   .contact-card,
+  .license-card,
+  .brand-asset-grid article,
   .faq-list article,
   .process-grid article {
     padding: 16px;

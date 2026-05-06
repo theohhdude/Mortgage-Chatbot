@@ -11,6 +11,42 @@ const chatJumpLinks = document.querySelectorAll(".js-chat-jump");
 chatForm.noValidate = true;
 
 const loanApplicationUrl = "https://www.getapprovedinc.com/loan-app/?siteId=3878936559&workFlowId=106300";
+const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbxagmg6-uIs5CBDbghXrYImJxHpK-mehLNapHAek0LduDP6BqTfiW95KfZF__zv-9g8/exec";
+const contactConsentDisclosure = "By selecting I Agree, you authorize Get Approved Mortgage, Inc. to contact you at the phone number and email you provided about mortgage products and services, including by call, text message, or email. Calls or texts may use automated technology, prerecorded messages, or artificial voice. Consent is not required to buy goods or services. Message and data rates may apply. Reply STOP to opt out.";
+
+const leadSubmissionFields = [
+  "submittedAt",
+  "source",
+  "fullName",
+  "email",
+  "phone",
+  "intent",
+  "firstTimeBuyer",
+  "purchasePropertyUse",
+  "refinancePurpose",
+  "state",
+  "creditRange",
+  "downPayment",
+  "purchasePriceRange",
+  "desiredHomeType",
+  "bankruptcy",
+  "veteran",
+  "borrowAmount",
+  "equity",
+  "homeValue",
+  "refinancePropertyUse",
+  "currentHomeType",
+  "currentMortgage",
+  "interestRate",
+  "secondMortgage",
+  "amountOwed",
+  "adverseCreditEvents",
+  "bestContactTime",
+  "wantsApplication",
+  "contactConsent",
+  "consentDisclosure",
+  "consentedAt"
+];
 
 const states = [
   "Alabama", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
@@ -48,7 +84,10 @@ const lead = {
   amountOwed: "",
   adverseCreditEvents: "",
   bestContactTime: "",
-  wantsApplication: ""
+  wantsApplication: "",
+  contactConsent: "",
+  consentDisclosure: "",
+  consentedAt: ""
 };
 
 const initialFlow = [
@@ -119,7 +158,12 @@ const purchaseQuestions = [
   {
     key: "wantsApplication",
     prompt: "That wraps up this set of questions. Would you like to get the loan application process started?",
-    replies: ["Yes", "No"],
+    replies: ["Yes", "No"]
+  },
+  {
+    key: "contactConsent",
+    prompt: contactConsentDisclosure,
+    replies: ["I Agree", "No Thanks"],
     end: true
   }
 ];
@@ -208,7 +252,12 @@ const refinanceQuestions = [
   {
     key: "wantsApplication",
     prompt: "That wraps up this set of questions. Would you like to get the loan application process started?",
-    replies: ["Yes", "No"],
+    replies: ["Yes", "No"]
+  },
+  {
+    key: "contactConsent",
+    prompt: contactConsentDisclosure,
+    replies: ["I Agree", "No Thanks"],
     end: true
   }
 ];
@@ -216,6 +265,7 @@ const refinanceQuestions = [
 let activeFlow = [...initialFlow];
 let stepIndex = 0;
 let historyStack = [];
+let leadSubmitted = false;
 
 function getFirstName() {
   return lead.fullName.trim().split(/\s+/)[0] || "there";
@@ -422,6 +472,7 @@ function saveHistorySnapshot() {
     activeFlow: [...activeFlow],
     stepIndex,
     lead: { ...lead },
+    leadSubmitted,
     chatWindowHtml: chatWindow.innerHTML,
     summaryHtml: summaryFields.innerHTML,
     summaryHidden: leadSummary.hidden
@@ -442,6 +493,7 @@ function goBack() {
     lead[key] = previous.lead[key] || "";
   });
 
+  leadSubmitted = previous.leadSubmitted;
   chatWindow.innerHTML = previous.chatWindowHtml;
   summaryFields.innerHTML = previous.summaryHtml;
   leadSummary.hidden = previous.summaryHidden;
@@ -481,6 +533,13 @@ function appendPurchaseFlowAfterFirstTime(answer) {
 
 function finishFlow() {
   renderSummary();
+  submitLeadToGoogleSheets();
+
+  if (lead.contactConsent !== "Yes") {
+    addMessage("bot", "Thank you. We captured your request and will only contact you as permitted.");
+    setReplies(["Start over"]);
+    return;
+  }
 
   if (lead.wantsApplication === "Yes") {
     addMessage("bot", "Great. You can start the loan application now using our secure portal. Fill out the forms and one of our loan officers will give you a call. Thank you.");
@@ -519,7 +578,9 @@ function renderSummary() {
     ["Judgments / foreclosure / defaults", lead.adverseCreditEvents],
     ["Veteran", lead.veteran],
     ["Best contact time", lead.bestContactTime],
-    ["Wants application", lead.wantsApplication]
+    ["Wants application", lead.wantsApplication],
+    ["Contact consent", lead.contactConsent],
+    ["Consent timestamp", lead.consentedAt]
   ].filter(([, value]) => value);
 
   summaryFields.innerHTML = "";
@@ -536,6 +597,43 @@ function renderSummary() {
   });
 
   leadSummary.hidden = false;
+}
+
+function buildLeadSubmission() {
+  return leadSubmissionFields.reduce((payload, field) => {
+    if (field === "submittedAt") {
+      payload[field] = new Date().toISOString();
+      return payload;
+    }
+
+    if (field === "source") {
+      payload[field] = window.location.href;
+      return payload;
+    }
+
+    payload[field] = lead[field] || "";
+    return payload;
+  }, {});
+}
+
+function submitLeadToGoogleSheets() {
+  if (!googleSheetsWebAppUrl || leadSubmitted) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("payload", JSON.stringify(buildLeadSubmission()));
+
+  leadSubmitted = true;
+
+  fetch(googleSheetsWebAppUrl, {
+    method: "POST",
+    mode: "no-cors",
+    body: formData
+  }).catch((error) => {
+    leadSubmitted = false;
+    console.error("Google Sheets lead submission failed:", error);
+  });
 }
 
 function submitAnswer(rawAnswer) {
@@ -584,6 +682,11 @@ function submitAnswer(rawAnswer) {
     return;
   } else if (step.key === "firstTimeBuyer") {
     appendPurchaseFlowAfterFirstTime(answer);
+  } else if (step.key === "contactConsent") {
+    const consented = /agree|yes/i.test(answer);
+    lead.contactConsent = consented ? "Yes" : "No";
+    lead.consentDisclosure = contactConsentDisclosure;
+    lead.consentedAt = consented ? new Date().toISOString() : "";
   } else if (["bankruptcy", "veteran", "currentMortgage", "secondMortgage", "wantsApplication"].includes(step.key)) {
     lead[step.key] = normalizeYesNo(answer);
   } else {
@@ -612,6 +715,7 @@ function resetFlow() {
     lead[key] = "";
   });
 
+  leadSubmitted = false;
   chatWindow.innerHTML = "";
   summaryFields.innerHTML = "";
   leadSummary.hidden = true;
