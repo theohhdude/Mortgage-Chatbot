@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortgage Calculators | Get Approved Mortgage Inc</title>
+  <meta
+    name="description"
+    content="Mortgage calculators from Get Approved Mortgage, Inc. for estimating monthly payments and home affordability."
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-lockup">
+      <a href="index.html#top" class="brand-logo-link" aria-label="Get Approved Mortgage Inc home">
+        <img class="brand-logo" src="assets/logo.png" alt="Get Approved Mortgage Inc logo">
+      </a>
+    </div>
+  </header>
+
+  <main class="calculators-page">
+    <section class="calculators-hero">
+      <div>
+        <p class="eyebrow">Mortgage Calculators</p>
+        <h1>Plan your next mortgage move with clearer numbers.</h1>
+        <p>
+          Estimate a monthly mortgage payment or explore a comfortable purchase range before starting the full
+          conversation with a licensed mortgage professional.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-button" href="index.html#chatForm">Start The Intake</a>
+          <a class="secondary-button" href="index.html">Back To Home</a>
+        </div>
+      </div>
+      <aside class="calculator-note">
+        <img src="assets/logo.png" alt="Get Approved Mortgage Inc logo">
+        <p>
+          These calculators are educational estimates only. Actual loan terms, payments, rates, taxes, insurance,
+          mortgage insurance, and qualification amounts may vary.
+        </p>
+      </aside>
+    </section>
+
+    <section class="calculator-grid" aria-label="Mortgage calculators">
+      <article class="calculator-card">
+        <div class="calculator-heading">
+          <p class="eyebrow">Payment Estimate</p>
+          <h2>Monthly Payment Calculator</h2>
+          <p>Estimate principal, interest, taxes, insurance, and optional HOA dues.</p>
+        </div>
+
+        <form id="paymentCalculator" class="calculator-form">
+          <label>
+            Home Price
+            <input name="homePrice" type="number" min="0" step="1000" value="350000">
+          </label>
+          <label>
+            Down Payment
+            <input name="downPayment" type="number" min="0" step="1000" value="35000">
+          </label>
+          <label>
+            Interest Rate (%)
+            <input name="interestRate" type="number" min="0" step="0.01" value="6.75">
+          </label>
+          <label>
+            Loan Term
+            <select name="loanTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+              <option value="10">10 years</option>
+            </select>
+          </label>
+          <label>
+            Annual Property Tax
+            <input name="propertyTax" type="number" min="0" step="100" value="4200">
+          </label>
+          <label>
+            Annual Home Insurance
+            <input name="insurance" type="number" min="0" step="100" value="1500">
+          </label>
+          <label>
+            Monthly HOA
+            <input name="hoa" type="number" min="0" step="25" value="0">
+          </label>
+          <button type="submit">Calculate Payment</button>
+        </form>
+
+        <div class="calculator-result" id="paymentResult" aria-live="polite">
+          <p class="result-label">Estimated Monthly Payment</p>
+          <strong>$0</strong>
+          <dl></dl>
+        </div>
+      </article>
+
+      <article class="calculator-card">
+        <div class="calculator-heading">
+          <p class="eyebrow">Purchase Range</p>
+          <h2>Home Affordability Calculator</h2>
+          <p>Estimate a purchase range using common 28/36 debt-to-income guidelines.</p>
+        </div>
+
+        <form id="affordabilityCalculator" class="calculator-form">
+          <label>
+            Gross Annual Income
+            <input name="annualIncome" type="number" min="0" step="1000" value="90000">
+          </label>
+          <label>
+            Monthly Debt Payments
+            <input name="monthlyDebt" type="number" min="0" step="50" value="650">
+          </label>
+          <label>
+            Down Payment Available
+            <input name="downPayment" type="number" min="0" step="1000" value="40000">
+          </label>
+          <label>
+            Interest Rate (%)
+            <input name="interestRate" type="number" min="0" step="0.01" value="6.75">
+          </label>
+          <label>
+            Loan Term
+            <select name="loanTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+            </select>
+          </label>
+          <label>
+            Property Tax Rate (%)
+            <input name="propertyTaxRate" type="number" min="0" step="0.01" value="1.25">
+          </label>
+          <label>
+            Annual Home Insurance
+            <input name="insurance" type="number" min="0" step="100" value="1500">
+          </label>
+          <button type="submit">Calculate Affordability</button>
+        </form>
+
+        <div class="calculator-result" id="affordabilityResult" aria-live="polite">
+          <p class="result-label">Estimated Purchase Range</p>
+          <strong>$0</strong>
+          <dl></dl>
+        </div>
+      </article>
+
+      <article class="calculator-card calculator-card-wide">
+        <div class="calculator-heading">
+          <p class="eyebrow">Payment Amortization</p>
+          <h2>Payment Amortization Calculator</h2>
+          <p>Estimate monthly payment, total interest, and a year-by-year loan balance schedule.</p>
+        </div>
+
+        <form id="amortizationCalculator" class="calculator-form">
+          <label>
+            Loan Amount
+            <input name="loanAmount" type="number" min="0" step="1000" value="315000">
+          </label>
+          <label>
+            Interest Rate (%)
+            <input name="interestRate" type="number" min="0" step="0.01" value="6.75">
+          </label>
+          <label>
+            Loan Term
+            <select name="loanTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+              <option value="10">10 years</option>
+            </select>
+          </label>
+          <label>
+            Extra Monthly Principal
+            <input name="extraPrincipal" type="number" min="0" step="25" value="0">
+          </label>
+          <button type="submit">Calculate Amortization</button>
+        </form>
+
+        <div class="calculator-result" id="amortizationResult" aria-live="polite">
+          <p class="result-label">Estimated Monthly Payment</p>
+          <strong>$0</strong>
+          <dl></dl>
+          <div class="amortization-table-wrap">
+            <table class="amortization-table">
+              <thead>
+                <tr>
+                  <th scope="col">Year</th>
+                  <th scope="col">Principal Paid</th>
+                  <th scope="col">Interest Paid</th>
+                  <th scope="col">Ending Balance</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+      <article class="calculator-card calculator-card-wide">
+        <div class="calculator-heading">
+          <p class="eyebrow">Rent vs. Own</p>
+          <h2>Rent Vs. Own Calculator</h2>
+          <p>Compare the estimated long-term cost of renting against buying a home and building equity.</p>
+        </div>
+
+        <form id="rentOwnCalculator" class="calculator-form">
+          <label>
+            Monthly Rent
+            <input name="monthlyRent" type="number" min="0" step="50" value="2200">
+          </label>
+          <label>
+            Annual Rent Increase (%)
+            <input name="rentIncrease" type="number" min="0" step="0.1" value="3">
+          </label>
+          <label>
+            Home Price
+            <input name="homePrice" type="number" min="0" step="1000" value="350000">
+          </label>
+          <label>
+            Down Payment
+            <input name="downPayment" type="number" min="0" step="1000" value="35000">
+          </label>
+          <label>
+            Interest Rate (%)
+            <input name="interestRate" type="number" min="0" step="0.01" value="6.75">
+          </label>
+          <label>
+            Loan Term
+            <select name="loanTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+            </select>
+          </label>
+          <label>
+            Annual Property Tax
+            <input name="propertyTax" type="number" min="0" step="100" value="4200">
+          </label>
+          <label>
+            Annual Home Insurance
+            <input name="insurance" type="number" min="0" step="100" value="1500">
+          </label>
+          <label>
+            Monthly Maintenance
+            <input name="maintenance" type="number" min="0" step="25" value="250">
+          </label>
+          <label>
+            Annual Home Appreciation (%)
+            <input name="appreciation" type="number" min="0" step="0.1" value="3">
+          </label>
+          <label>
+            Years To Compare
+            <input name="yearsToCompare" type="number" min="1" max="40" step="1" value="7">
+          </label>
+          <button type="submit">Compare Rent Vs. Own</button>
+        </form>
+
+        <div class="calculator-result" id="rentOwnResult" aria-live="polite">
+          <p class="result-label">Estimated Advantage</p>
+          <strong>$0</strong>
+          <dl></dl>
+        </div>
+      </article>
+
+      <article class="calculator-card calculator-card-wide">
+        <div class="calculator-heading">
+          <p class="eyebrow">Annual Percentage Rate</p>
+          <h2>APR Calculator</h2>
+          <p>Estimate an annual percentage rate by factoring finance charges into the cost of borrowing.</p>
+        </div>
+
+        <form id="aprCalculator" class="calculator-form">
+          <label>
+            Loan Amount
+            <input name="loanAmount" type="number" min="0" step="1000" value="315000">
+          </label>
+          <label>
+            Interest Rate (%)
+            <input name="interestRate" type="number" min="0" step="0.01" value="6.75">
+          </label>
+          <label>
+            Loan Term
+            <select name="loanTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+              <option value="10">10 years</option>
+            </select>
+          </label>
+          <label>
+            Origination / Points
+            <input name="origination" type="number" min="0" step="100" value="3150">
+          </label>
+          <label>
+            Other Finance Charges
+            <input name="financeCharges" type="number" min="0" step="100" value="1800">
+          </label>
+          <button type="submit">Calculate APR</button>
+        </form>
+
+        <div class="calculator-result" id="aprResult" aria-live="polite">
+          <p class="result-label">Estimated APR</p>
+          <strong>0.00%</strong>
+          <dl></dl>
+        </div>
+      </article>
+
+      <article class="calculator-card calculator-card-wide">
+        <div class="calculator-heading">
+          <p class="eyebrow">Debt Consolidation</p>
+          <h2>Debt Consolidation Calculator</h2>
+          <p>Compare current monthly debt payments with a possible consolidated loan payment.</p>
+        </div>
+
+        <form id="debtConsolidationCalculator" class="calculator-form">
+          <label>
+            Credit Card Balance
+            <input name="cardBalance" type="number" min="0" step="100" value="18000">
+          </label>
+          <label>
+            Credit Card Monthly Payment
+            <input name="cardPayment" type="number" min="0" step="25" value="550">
+          </label>
+          <label>
+            Auto / Personal Loan Balance
+            <input name="loanBalance" type="number" min="0" step="100" value="12000">
+          </label>
+          <label>
+            Auto / Personal Monthly Payment
+            <input name="loanPayment" type="number" min="0" step="25" value="375">
+          </label>
+          <label>
+            Other Debt Balance
+            <input name="otherBalance" type="number" min="0" step="100" value="8000">
+          </label>
+          <label>
+            Other Monthly Payment
+            <input name="otherPayment" type="number" min="0" step="25" value="250">
+          </label>
+          <label>
+            Consolidation Rate (%)
+            <input name="consolidationRate" type="number" min="0" step="0.01" value="8.5">
+          </label>
+          <label>
+            Consolidation Term
+            <select name="consolidationTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+              <option value="10">10 years</option>
+              <option value="5">5 years</option>
+            </select>
+          </label>
+          <label>
+            Closing Costs / Fees
+            <input name="closingCosts" type="number" min="0" step="100" value="2500">
+          </label>
+          <button type="submit">Calculate Consolidation</button>
+        </form>
+
+        <div class="calculator-result" id="debtConsolidationResult" aria-live="polite">
+          <p class="result-label">Estimated Monthly Savings</p>
+          <strong>$0</strong>
+          <dl></dl>
+        </div>
+      </article>
+
+      <article class="calculator-card calculator-card-wide">
+        <div class="calculator-heading">
+          <p class="eyebrow">Prepayment Savings</p>
+          <h2>Prepayment Savings Calculator</h2>
+          <p>Estimate how extra monthly principal payments may reduce interest and shorten payoff time.</p>
+        </div>
+
+        <form id="prepaymentCalculator" class="calculator-form">
+          <label>
+            Loan Amount
+            <input name="loanAmount" type="number" min="0" step="1000" value="315000">
+          </label>
+          <label>
+            Interest Rate (%)
+            <input name="interestRate" type="number" min="0" step="0.01" value="6.75">
+          </label>
+          <label>
+            Loan Term
+            <select name="loanTerm">
+              <option value="30">30 years</option>
+              <option value="25">25 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+              <option value="10">10 years</option>
+            </select>
+          </label>
+          <label>
+            Extra Monthly Principal
+            <input name="extraPrincipal" type="number" min="0" step="25" value="250">
+          </label>
+          <button type="submit">Calculate Savings</button>
+        </form>
+
+        <div class="calculator-result" id="prepaymentResult" aria-live="polite">
+          <p class="result-label">Estimated Interest Savings</p>
+          <strong>$0</strong>
+          <dl></dl>
+        </div>
+      </article>
+    </section>
+
+    <section class="calculator-disclaimer">
+      <h2>Calculator Disclaimer</h2>
+      <p>
+        These calculators are provided for informational purposes only and are not a loan estimate, loan approval,
+        commitment to lend, or guarantee of any available loan terms. Contact Get Approved Mortgage, Inc. for a
+        personalized review based on your complete financial picture.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Get Approved Mortgage, Inc. | NMLS#1575396 | 2821 Glenwood Ave, Rockford, IL 61101</p>
+    <p><a href="index.html">Home</a> | <a href="company-state-licenses.html">Company State Licenses</a> | <a href="privacy-policy.html">Privacy Policy</a></p>
+  </footer>
+
+  <script src="calculators.js"></script>
+</body>
+</html>
