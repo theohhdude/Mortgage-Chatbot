@@ -4,8 +4,6 @@ const chatForm = document.getElementById("chatForm");
 const chatInput = document.getElementById("chatInput");
 const stateSelect = document.getElementById("stateSelect");
 const stateOptions = document.getElementById("stateOptions");
-const leadSummary = document.getElementById("leadSummary");
-const summaryFields = document.getElementById("summaryFields");
 const chatJumpLinks = document.querySelectorAll(".js-chat-jump");
 
 chatForm.noValidate = true;
@@ -93,7 +91,8 @@ const lead = {
 const initialFlow = [
   {
     key: "fullName",
-    prompt: "Hello, thanks for choosing Get Approved Mortgage. May I ask who I am speaking to?"
+    prompt: "If so, I'd love to help you get Started? Can I have your name? Otherwise, scroll below to see some of the products we offer.",
+    placeholder: "Enter Name Here"
   },
   {
     key: "email",
@@ -154,6 +153,11 @@ const purchaseQuestions = [
     key: "veteran",
     prompt: "Are you a veteran?",
     replies: ["Yes", "No"]
+  },
+  {
+    key: "bestContactTime",
+    prompt: "When would be the best time to reach you?",
+    replies: ["Morning", "Afternoon", "Evening"]
   },
   {
     key: "wantsApplication",
@@ -358,7 +362,7 @@ function configureInput(step) {
   stateSelect.value = "";
   stateSelect.hidden = !step.useStateList;
   chatInput.type = step.inputType || "text";
-  chatInput.placeholder = step.useStateList ? "Start typing a state" : "Type your answer";
+  chatInput.placeholder = step.placeholder || (step.useStateList ? "Start typing a state" : "Type your answer");
   chatInput.removeAttribute("pattern");
   chatInput.removeAttribute("inputmode");
   chatInput.setAttribute("autocomplete", getAutocompleteValue(step));
@@ -473,9 +477,7 @@ function saveHistorySnapshot() {
     stepIndex,
     lead: { ...lead },
     leadSubmitted,
-    chatWindowHtml: chatWindow.innerHTML,
-    summaryHtml: summaryFields.innerHTML,
-    summaryHidden: leadSummary.hidden
+    chatWindowHtml: chatWindow.innerHTML
   });
 }
 
@@ -495,8 +497,6 @@ function goBack() {
 
   leadSubmitted = previous.leadSubmitted;
   chatWindow.innerHTML = previous.chatWindowHtml;
-  summaryFields.innerHTML = previous.summaryHtml;
-  leadSummary.hidden = previous.summaryHidden;
   renderCurrentControls();
   chatWindow.scrollTop = chatWindow.scrollHeight;
   chatInput.focus();
@@ -532,7 +532,6 @@ function appendPurchaseFlowAfterFirstTime(answer) {
 }
 
 function finishFlow() {
-  renderSummary();
   submitLeadToGoogleSheets();
 
   if (lead.contactConsent !== "Yes") {
@@ -549,54 +548,6 @@ function finishFlow() {
 
   addMessage("bot", "Thank you for speaking to me today. One of our loan professionals will contact you soon.");
   setReplies(["Start over"]);
-}
-
-function renderSummary() {
-  const entries = [
-    ["Name", lead.fullName],
-    ["Email", lead.email],
-    ["Phone", lead.phone],
-    ["Loan goal", lead.intent],
-    ["First-time buyer", lead.firstTimeBuyer],
-    ["Purchase property use", lead.purchasePropertyUse],
-    ["Refinance purpose", lead.refinancePurpose],
-    ["State", lead.state],
-    ["Credit", lead.creditRange],
-    ["Down payment", lead.downPayment],
-    ["Purchase price", lead.purchasePriceRange],
-    ["Desired home type", lead.desiredHomeType],
-    ["Borrow amount", lead.borrowAmount],
-    ["Equity", lead.equity],
-    ["Home value", lead.homeValue],
-    ["Refinance property use", lead.refinancePropertyUse],
-    ["Current home type", lead.currentHomeType],
-    ["Current mortgage", lead.currentMortgage],
-    ["Interest rate", lead.interestRate],
-    ["Second mortgage", lead.secondMortgage],
-    ["Amount owed", lead.amountOwed],
-    ["Bankruptcy", lead.bankruptcy],
-    ["Judgments / foreclosure / defaults", lead.adverseCreditEvents],
-    ["Veteran", lead.veteran],
-    ["Best contact time", lead.bestContactTime],
-    ["Wants application", lead.wantsApplication],
-    ["Contact consent", lead.contactConsent],
-    ["Consent timestamp", lead.consentedAt]
-  ].filter(([, value]) => value);
-
-  summaryFields.innerHTML = "";
-
-  entries.forEach(([label, value]) => {
-    const wrapper = document.createElement("div");
-    const term = document.createElement("dt");
-    const desc = document.createElement("dd");
-    term.textContent = label;
-    desc.textContent = value;
-    wrapper.appendChild(term);
-    wrapper.appendChild(desc);
-    summaryFields.appendChild(wrapper);
-  });
-
-  leadSummary.hidden = false;
 }
 
 function buildLeadSubmission() {
@@ -717,8 +668,6 @@ function resetFlow() {
 
   leadSubmitted = false;
   chatWindow.innerHTML = "";
-  summaryFields.innerHTML = "";
-  leadSummary.hidden = true;
   askCurrentStep();
 }
 
