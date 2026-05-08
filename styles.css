@@ -101,6 +101,10 @@ main {
   overflow-x: clip;
 }
 
+.header-login {
+  display: none;
+}
+
 .brand-lockup {
   display: flex;
   align-items: center;
@@ -288,12 +292,13 @@ h3 {
   border-radius: var(--radius-lg);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
+  aspect-ratio: 16 / 8.55;
 }
 
 .hero-banner img {
   display: block;
   width: 100%;
-  height: 220px;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -722,6 +727,23 @@ h3 {
 .contact-card a,
 .site-footer a {
   color: var(--primary-deep);
+}
+
+.licensing-info {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 82px;
+  gap: 14px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.licensing-info p {
+  margin: 0;
+}
+
+.licensing-info img {
+  width: 82px;
+  height: auto;
 }
 
 .license-page {
@@ -1201,19 +1223,18 @@ h3 {
 .final-cta {
   max-width: var(--content-width);
   padding: 32px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  justify-items: center;
   gap: 18px;
-  align-items: center;
+  text-align: center;
   background:
     radial-gradient(circle at right, rgba(239, 143, 51, 0.2), transparent 24%),
     rgba(255, 255, 255, 0.8);
 }
 
 .final-cta h2 {
-  max-width: 34ch;
+  max-width: 58ch;
   line-height: 1.08;
-  text-align: center;
 }
 
 .final-cta > div {
@@ -1264,6 +1285,39 @@ h3 {
 @media (min-width: 1121px) {
   .hero-section {
     padding-top: 10px;
+  }
+
+  .site-header {
+    position: sticky;
+  }
+
+  .header-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    min-height: 52px;
+    padding: 0 28px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-deep) 100%);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    box-shadow: 0 14px 28px rgba(13, 94, 166, 0.18);
+    transition: transform 140ms ease, opacity 140ms ease;
+  }
+
+  .header-login:hover,
+  .header-login:focus-visible {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+
+  .final-cta .primary-button {
+    min-height: 68px;
+    padding: 0 34px;
+    font-size: 1.5rem;
   }
 
   .hero-grid {
@@ -1521,7 +1575,7 @@ h3 {
   }
 
   .hero-banner img {
-    height: 160px;
+    min-height: 209px;
   }
 
   .hero-proof,
@@ -1669,7 +1723,7 @@ h3 {
   }
 
   .hero-banner img {
-    height: 140px;
+    min-height: 181px;
   }
 
   .hero-proof article,
