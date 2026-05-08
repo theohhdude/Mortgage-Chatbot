@@ -9,7 +9,7 @@ const chatJumpLinks = document.querySelectorAll(".js-chat-jump");
 chatForm.noValidate = true;
 
 const loanApplicationUrl = "https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&siteId=7423560722";
-const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbxagmg6-uIs5CBDbghXrYImJxHpK-mehLNapHAek0LduDP6BqTfiW95KfZF__zv-9g8/exec";
+const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbxdfAkFxQ2i8z1orh6n4gwu5qd_G_YVnKOxqLDco0j9sdmzDe4kF4GaRwx4BHpz78NVZw/exec";
 const contactConsentDisclosure = "By selecting I Agree, you authorize Get Approved Mortgage, Inc. to contact you at the phone number and email you provided about mortgage products and services, including by call, text message, or email. Calls or texts may use automated technology, prerecorded messages, or artificial voice. Consent is not required to buy goods or services. Message and data rates may apply. Reply STOP to opt out.";
 
 const leadSubmissionFields = [
