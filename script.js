@@ -13,7 +13,11 @@ const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbxdfAkFxQ
 const contactConsentDisclosure = "By selecting I Agree, you authorize Get Approved Mortgage, Inc. to contact you at the phone number and email you provided about mortgage products and services, including by call, text message, or email. Calls or texts may use automated technology, prerecorded messages, or artificial voice. Consent is not required to buy goods or services. Message and data rates may apply. Reply STOP to opt out.";
 
 const leadSubmissionFields = [
+  "leadId",
+  "status",
   "submittedAt",
+  "lastUpdatedAt",
+  "completedAt",
   "source",
   "fullName",
   "email",
@@ -46,6 +50,14 @@ const leadSubmissionFields = [
   "consentedAt"
 ];
 
+function createLeadId() {
+  if (window.crypto?.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+
+  return `lead-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 const states = [
   "Alabama", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
   "Florida", "Georgia", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
@@ -57,6 +69,11 @@ const states = [
 ];
 
 const lead = {
+  leadId: createLeadId(),
+  status: "Started",
+  submittedAt: "",
+  lastUpdatedAt: "",
+  completedAt: "",
   fullName: "",
   email: "",
   phone: "",
@@ -269,7 +286,6 @@ const refinanceQuestions = [
 let activeFlow = [...initialFlow];
 let stepIndex = 0;
 let historyStack = [];
-let leadSubmitted = false;
 
 function getFirstName() {
   return lead.fullName.trim().split(/\s+/)[0] || "there";
@@ -476,7 +492,6 @@ function saveHistorySnapshot() {
     activeFlow: [...activeFlow],
     stepIndex,
     lead: { ...lead },
-    leadSubmitted,
     chatWindowHtml: chatWindow.innerHTML
   });
 }
@@ -495,7 +510,6 @@ function goBack() {
     lead[key] = previous.lead[key] || "";
   });
 
-  leadSubmitted = previous.leadSubmitted;
   chatWindow.innerHTML = previous.chatWindowHtml;
   renderCurrentControls();
   chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -532,7 +546,7 @@ function appendPurchaseFlowAfterFirstTime(answer) {
 }
 
 function finishFlow() {
-  submitLeadToGoogleSheets();
+  submitLeadToGoogleSheets("Completed");
 
   if (lead.contactConsent !== "Yes") {
     addMessage("bot", "Thank you. We captured your request and will only contact you as permitted.");
@@ -550,13 +564,22 @@ function finishFlow() {
   setReplies(["Start over"]);
 }
 
-function buildLeadSubmission() {
-  return leadSubmissionFields.reduce((payload, field) => {
-    if (field === "submittedAt") {
-      payload[field] = new Date().toISOString();
-      return payload;
-    }
+function hasEnoughLeadInfoToSubmit() {
+  return Boolean(lead.fullName && (lead.email || lead.phone));
+}
 
+function buildLeadSubmission(status = "Partial") {
+  const now = new Date().toISOString();
+
+  if (!lead.submittedAt) {
+    lead.submittedAt = now;
+  }
+
+  lead.status = status;
+  lead.lastUpdatedAt = now;
+  lead.completedAt = status === "Completed" ? now : lead.completedAt || "";
+
+  return leadSubmissionFields.reduce((payload, field) => {
     if (field === "source") {
       payload[field] = window.location.href;
       return payload;
@@ -567,24 +590,41 @@ function buildLeadSubmission() {
   }, {});
 }
 
-function submitLeadToGoogleSheets() {
-  if (!googleSheetsWebAppUrl || leadSubmitted) {
+function submitLeadToGoogleSheets(status = "Partial") {
+  if (!googleSheetsWebAppUrl || !hasEnoughLeadInfoToSubmit()) {
     return;
   }
 
   const formData = new FormData();
-  formData.append("payload", JSON.stringify(buildLeadSubmission()));
-
-  leadSubmitted = true;
+  formData.append("payload", JSON.stringify(buildLeadSubmission(status)));
 
   fetch(googleSheetsWebAppUrl, {
     method: "POST",
     mode: "no-cors",
     body: formData
   }).catch((error) => {
-    leadSubmitted = false;
     console.error("Google Sheets lead submission failed:", error);
   });
+}
+
+function submitLeadOnExit() {
+  if (!googleSheetsWebAppUrl || !hasEnoughLeadInfoToSubmit() || lead.status === "Completed") {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("payload", JSON.stringify(buildLeadSubmission("Partial")));
+
+  if (navigator.sendBeacon?.(googleSheetsWebAppUrl, formData)) {
+    return;
+  }
+
+  fetch(googleSheetsWebAppUrl, {
+    method: "POST",
+    mode: "no-cors",
+    body: formData,
+    keepalive: true
+  }).catch(() => {});
 }
 
 function submitAnswer(rawAnswer) {
@@ -652,6 +692,8 @@ function submitAnswer(rawAnswer) {
     return;
   }
 
+  submitLeadToGoogleSheets("Partial");
+
   window.setTimeout(() => {
     askCurrentStep();
   }, 280);
@@ -666,7 +708,8 @@ function resetFlow() {
     lead[key] = "";
   });
 
-  leadSubmitted = false;
+  lead.leadId = createLeadId();
+  lead.status = "Started";
   chatWindow.innerHTML = "";
   askCurrentStep();
 }
@@ -721,5 +764,7 @@ chatJumpLinks.forEach((link) => {
     scrollChatFormIntoActionPosition();
   });
 });
+
+window.addEventListener("pagehide", submitLeadOnExit);
 
 askCurrentStep();
