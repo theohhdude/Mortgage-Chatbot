@@ -1,0 +1,5 @@
+RewriteEngine On
+
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www\.getapproved\.mortgage$ [NC]
+RewriteRule ^(.*)$ https://www.getapproved.mortgage/$1 [R=301,L]
