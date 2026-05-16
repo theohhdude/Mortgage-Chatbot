@@ -746,8 +746,11 @@ chatForm.addEventListener("submit", (event) => {
 });
 
 stateSelect.addEventListener("change", () => {
-  chatInput.value = stateSelect.value;
-  chatInput.focus();
+  if (!stateSelect.value) {
+    return;
+  }
+
+  submitAnswer(stateSelect.value);
 });
 
 chatInput.addEventListener("input", () => {
