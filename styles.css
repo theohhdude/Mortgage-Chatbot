@@ -904,6 +904,52 @@ h3 {
   color: var(--primary-deep);
 }
 
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.social-links a {
+  width: 48px;
+  height: 48px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #1877f2;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(13, 94, 166, 0.18);
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.social-links a[href*="linkedin"] {
+  background: #0a66c2;
+}
+
+.social-links .blog-link {
+  background: #fff;
+  border: 1px solid rgba(13, 94, 166, 0.14);
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.social-links svg {
+  width: 25px;
+  height: 25px;
+  fill: currentColor;
+}
+
+.social-links img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
 .licensing-info {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 82px;
