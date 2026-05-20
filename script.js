@@ -5,11 +5,15 @@ const chatInput = document.getElementById("chatInput");
 const stateSelect = document.getElementById("stateSelect");
 const stateOptions = document.getElementById("stateOptions");
 const chatJumpLinks = document.querySelectorAll(".js-chat-jump");
+const ratesGrid = document.getElementById("ratesGrid");
+const ratesUpdated = document.getElementById("ratesUpdated");
+const ratesDisclaimer = document.getElementById("ratesDisclaimer");
 
 chatForm.noValidate = true;
 
 const loanApplicationUrl = "https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&siteId=7423560722";
 const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbxdfAkFxQ2i8z1orh6n4gwu5qd_G_YVnKOxqLDco0j9sdmzDe4kF4GaRwx4BHpz78NVZw/exec";
+const mortgageRatesWebAppUrl = "https://script.google.com/macros/s/AKfycbz8edJZakd0G8LpuwBKo7i7QsdkS2vnCnZxqDay5fzmiuQnMRn8bxBvhkeESBmqzVP6fQ/exec";
 const contactConsentDisclosure = "By selecting I Agree, you authorize Get Approved Mortgage, Inc. to contact you at the phone number and email you provided about mortgage products and services, including by call, text message, or email. Calls or texts may use automated technology, prerecorded messages, or artificial voice. Consent is not required to buy goods or services. Message and data rates may apply. Reply STOP to opt out.";
 
 const leadSubmissionFields = [
@@ -627,6 +631,123 @@ function submitLeadOnExit() {
   }).catch(() => {});
 }
 
+function formatRatesUpdated(value) {
+  if (!value) {
+    return "Rates are being updated.";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return `Updated ${value}`;
+  }
+
+  return `Updated ${date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  })}`;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function createRateDetail(label, value) {
+  if (!value) {
+    return "";
+  }
+
+  return `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`;
+}
+
+function formatRatePercent(value) {
+  if (value === null || value === undefined || value === "") {
+    return "";
+  }
+
+  if (typeof value === "number") {
+    const percent = value <= 1 ? value * 100 : value;
+    return `${percent.toFixed(3).replace(/\.?0+$/, "")}%`;
+  }
+
+  const textValue = String(value).trim();
+
+  if (textValue.includes("%")) {
+    return textValue;
+  }
+
+  const numericValue = Number(textValue);
+
+  if (!Number.isNaN(numericValue)) {
+    const percent = numericValue <= 1 ? numericValue * 100 : numericValue;
+    return `${percent.toFixed(3).replace(/\.?0+$/, "")}%`;
+  }
+
+  return textValue;
+}
+
+function renderMortgageRates(data) {
+  if (!ratesGrid) {
+    return;
+  }
+
+  const rates = Array.isArray(data?.rates) ? data.rates.filter((rate) => rate.program && rate.rate) : [];
+
+  if (!rates.length) {
+    return;
+  }
+
+  ratesGrid.innerHTML = rates.map((rate) => `
+    <article class="rate-card">
+      <h3>${escapeHtml(rate.program)}</h3>
+      <strong>${escapeHtml(formatRatePercent(rate.rate))}</strong>
+      <dl>
+        ${createRateDetail("APR", formatRatePercent(rate.apr))}
+        ${createRateDetail("Points", rate.points)}
+        ${createRateDetail("Term", rate.term)}
+      </dl>
+      ${rate.notes ? `<p>${escapeHtml(rate.notes)}</p>` : ""}
+    </article>
+  `).join("");
+
+  if (ratesUpdated) {
+    ratesUpdated.textContent = formatRatesUpdated(data.updatedAt);
+  }
+
+  if (ratesDisclaimer && data.disclaimer) {
+    ratesDisclaimer.textContent = data.disclaimer;
+  }
+}
+
+function loadMortgageRates() {
+  if (!mortgageRatesWebAppUrl || !ratesGrid) {
+    return;
+  }
+
+  fetch(mortgageRatesWebAppUrl, {
+    method: "GET",
+    cache: "no-store"
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Rates request failed with status ${response.status}`);
+      }
+
+      return response.json();
+    })
+    .then(renderMortgageRates)
+    .catch((error) => {
+      console.error("Mortgage rates could not be loaded:", error);
+    });
+}
+
 function submitAnswer(rawAnswer) {
   const answer = rawAnswer.trim();
 
@@ -770,4 +891,5 @@ chatJumpLinks.forEach((link) => {
 
 window.addEventListener("pagehide", submitLeadOnExit);
 
+loadMortgageRates();
 askCurrentStep();
