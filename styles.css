@@ -644,6 +644,16 @@ h3 {
   box-shadow: 0 8px 18px rgba(13, 45, 82, 0.06);
 }
 
+.chat-form input.attention-placeholder {
+  border-color: rgba(180, 35, 24, 0.34);
+}
+
+.chat-form input.attention-placeholder::placeholder {
+  color: #b42318;
+  font-weight: 800;
+  opacity: 1;
+}
+
 .state-select {
   grid-column: 1 / -1;
   width: 100%;
@@ -821,11 +831,19 @@ h3 {
   line-height: 1.6;
 }
 
+.rates-assumptions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px 14px;
+  margin-top: 10px;
+}
+
 .rates-assumption {
-  margin: 6px 0 0;
+  margin: 0;
   color: var(--primary-deep);
   font-size: 0.86rem;
   font-weight: 800;
+  line-height: 1.35;
 }
 
 .stats-section,
@@ -1851,6 +1869,7 @@ h3 {
   .review-grid,
   .faq-list,
   .rates-grid,
+  .rates-assumptions,
   .local-mortgage-grid,
   .contact-grid,
   .license-hero,
@@ -1912,6 +1931,7 @@ h3 {
   .review-grid,
   .faq-list,
   .rates-grid,
+  .rates-assumptions,
   .local-mortgage-grid,
   .contact-grid,
   .license-grid,
@@ -2063,6 +2083,7 @@ h3 {
   .review-grid,
   .faq-list,
   .rates-grid,
+  .rates-assumptions,
   .local-mortgage-grid,
   .contact-grid,
   .license-grid,

@@ -383,6 +383,7 @@ function configureInput(step) {
   stateSelect.hidden = !step.useStateList;
   chatInput.type = step.inputType || "text";
   chatInput.placeholder = step.placeholder || (step.useStateList ? "Start typing a state" : "Type your answer");
+  chatInput.classList.toggle("attention-placeholder", step.key === "fullName");
   chatInput.removeAttribute("pattern");
   chatInput.removeAttribute("inputmode");
   chatInput.setAttribute("autocomplete", getAutocompleteValue(step));
@@ -752,6 +753,10 @@ function submitAnswer(rawAnswer) {
   const answer = rawAnswer.trim();
 
   if (!answer) {
+    if (getCurrentStep()?.key === "fullName") {
+      chatInput.classList.add("attention-placeholder");
+    }
+
     return;
   }
 
@@ -875,11 +880,17 @@ stateSelect.addEventListener("change", () => {
 });
 
 chatInput.addEventListener("input", () => {
+  chatInput.classList.remove("attention-placeholder");
+
   if (!isPhoneStep()) {
     return;
   }
 
   chatInput.value = formatUsPhone(chatInput.value);
+});
+
+chatInput.addEventListener("focus", () => {
+  chatInput.classList.remove("attention-placeholder");
 });
 
 chatJumpLinks.forEach((link) => {
