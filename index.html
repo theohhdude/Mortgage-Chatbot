@@ -75,7 +75,8 @@
             "Interest Only Mortgages",
             "Adjustable-Rate Mortgages",
             "Non-QM Loans",
-            "Bank Statement Loans"
+            "Bank Statement Loans",
+            "Foreign National Mortgage Loans"
           ],
           "sameAs": [
             "https://www.facebook.com/GetApprovedMortgageInc",
@@ -134,7 +135,17 @@
             },
             {
               "@type": "Offer",
-              "name": "ARM, Non-QM, and Bank Statement Loans",
+              "name": "Foreign National Mortgage Loans",
+              "url": "https://www.getapproved.mortgage/foreign-national.html"
+            },
+            {
+              "@type": "Offer",
+              "name": "Bank Statement Loans",
+              "url": "https://www.getapproved.mortgage/bank-statement-loans.html"
+            },
+            {
+              "@type": "Offer",
+              "name": "ARM and Non-QM Specialty Options",
               "url": "https://www.getapproved.mortgage/arm-specialty-options.html"
             }
           ]
@@ -181,12 +192,13 @@
       </a>
     </div>
     <a class="header-login" href="https://idp.elliemae.com/authorize?site_id=7423560722&amp;response_type=code&amp;redirect_uri=https%3A%2F%2Fgamai.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3FfromLogin%3Dtrue%26siteId%3D7423560722&amp;client_id=srtrz0d2&amp;scope=ccbp%20cc&amp;instance_id=11172991&amp;logo_url=https%3A%2F%2Fstore.asset.ecc.mortgagetech.ice.com%2F06c20766-593c-4fb1-a014-ae5d83ef6846&amp;logo_alt_text=Logo&amp;bust=998&amp;apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">Log in</a>
+    <a class="header-login header-application" href="https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&amp;siteId=7423560722" target="_blank" rel="noopener noreferrer">Click here to start the loan application</a>
   </header>
 
   <main id="top">
     <section class="hero-section">
       <div class="hero-grid chatbot-only">
-        <aside id="chatbot" class="chatbot-panel" aria-label="Mortgage chatbot">
+        <aside id="chatbot" class="chatbot-panel" aria-label="Mortgage chatbot" aria-hidden="false">
           <div class="chatbot-header">
             <div>
               <p class="agent-label">Get Approved Concierge</p>
@@ -198,15 +210,29 @@
 
           <div id="quickReplies" class="quick-replies" aria-label="Suggested replies"></div>
 
-          <form id="chatForm" class="chat-form">
+          <form id="chatForm" class="chat-form" autocomplete="on">
             <label class="sr-only" for="chatInput">Type your response</label>
             <label class="sr-only" for="stateSelect">Select a state</label>
-            <select id="stateSelect" class="state-select" hidden>
+            <select id="stateSelect" class="state-select" name="address-level1" autocomplete="address-level1" hidden>
               <option value="">Select a state</option>
             </select>
+            <div id="chatContactFields" class="chat-contact-fields" hidden>
+              <label>
+                <span>Name</span>
+                <input id="chatNameInput" name="name" type="text" placeholder="Enter Name Here" autocomplete="name">
+              </label>
+              <label>
+                <span>Phone Number</span>
+                <input id="chatPhoneInput" name="tel" type="tel" placeholder="555-555-5555" autocomplete="tel" inputmode="tel">
+              </label>
+              <label>
+                <span>Email</span>
+                <input id="chatEmailInput" name="email" type="email" placeholder="person@mail.com" autocomplete="email" inputmode="email">
+              </label>
+            </div>
             <input
               id="chatInput"
-              name="message"
+              name="name"
               type="text"
               placeholder="Type your answer"
               list="stateOptions"
@@ -237,23 +263,11 @@
             </article>
           </div>
 
-          <div class="rates-assumptions" aria-label="Rate assumptions">
-            <p class="rates-assumption">* Rate/Term Only</p>
-            <p class="rates-assumption">* Based on 30 day lock</p>
-            <p class="rates-assumption">* Full Documentation</p>
-            <p class="rates-assumption">* 740+ credit scores</p>
-            <p class="rates-assumption">* Loan-to-value 80% or less</p>
-            <p class="rates-assumption">* Debt-to-income 43% or less</p>
-            <p class="rates-assumption">* No bankruptcies, foreclosures, or judgments in the last 7 years</p>
-            <p class="rates-assumption">* 0 x 30 mortgage lates in the last 36 months</p>
-            <p class="rates-assumption">* Pricing is not guaranteed until rate lock</p>
+          <div class="rates-terms-button-wrap">
+            <a class="chat-agent-action-button rates-terms-button" href="terms-of-daily-rates.html">Click here to see daily rate/loan terms</a>
           </div>
-          <p id="ratesDisclaimer" class="rates-disclaimer">
-            Sample rates are for informational purposes only and are not a commitment to lend. Rates, APR, fees,
-            terms, and qualification may vary based on credit score, loan amount, property type, occupancy, down
-            payment, lock period, and other factors.
-          </p>
         </section>
+
       </div>
     </section>
 
@@ -261,7 +275,7 @@
       <div class="section-heading">
         <p class="eyebrow">Mortgage Loan Programs</p>
       </div>
-      <p class="program-intro">Click on any of the Loan Programs below to find out more about them, including FHA loans, VA loans, jumbo loans, DSCR loans, fixed-rate mortgages, and specialty home financing options.</p>
+      <p class="program-intro">Click on any of the Loan Programs below to find out more about them, including FHA loans, VA loans, jumbo loans, DSCR loans, foreign national loans, bank statement loans, fixed-rate mortgages, and specialty home financing options.</p>
 
       <div class="program-grid">
         <a class="program-card program-card-button" href="30-year-fixed.html">
@@ -299,9 +313,19 @@
           <p>Investor-focused rental property financing that looks at whether the property's income can support the proposed mortgage payment.</p>
           <span class="program-card-action">Learn more</span>
         </a>
+        <a class="program-card program-card-button" href="foreign-national.html">
+          <h3>Foreign National</h3>
+          <p>Mortgage options for eligible non-U.S. citizen borrowers who want to buy or refinance property in the United States.</p>
+          <span class="program-card-action">Learn more</span>
+        </a>
+        <a class="program-card program-card-button" href="bank-statement-loans.html">
+          <h3>Bank Statement Loans</h3>
+          <p>Alternative documentation financing for self-employed borrowers who may qualify using bank statement cash flow instead of traditional W-2 income.</p>
+          <span class="program-card-action">Learn more</span>
+        </a>
         <a class="program-card program-card-button" href="arm-specialty-options.html">
           <h3>ARM and Specialty Options</h3>
-          <p>Adjustable-rate mortgage, Non-QM, bank statement loan, and specialty products can help borrowers balance payment flexibility, property goals, and timing.</p>
+          <p>Adjustable-rate mortgage, Non-QM, and specialty products can help borrowers balance payment flexibility, property goals, and timing.</p>
           <span class="program-card-action">Learn more</span>
         </a>
       </div>
@@ -338,16 +362,16 @@
 
       <div class="review-grid">
         <article class="review-card">
-          <p>Get Approved Mortgage, Inc. positions itself around exceptional care, expert guidance, and a simpler mortgage experience.</p>
           <strong>Responsibility</strong>
+          <p>Get Approved Mortgage, Inc. positions itself around exceptional care, expert guidance, and a simpler mortgage experience.</p>
         </article>
         <article class="review-card">
-          <p>The company emphasizes ethical standards, transparency, and fairness in the way it serves borrowers.</p>
           <strong>Ethics and Integrity</strong>
+          <p>The company emphasizes ethical standards, transparency, and fairness in the way it serves borrowers.</p>
         </article>
         <article class="review-card">
-          <p>Customer care is framed as timely responses, education, and support that helps borrowers move with confidence.</p>
           <strong>Customer Care</strong>
+          <p>Customer care is framed as timely responses, education, and support that helps borrowers move with confidence.</p>
         </article>
       </div>
     </section>
@@ -379,9 +403,9 @@
       </div>
 
       <div class="local-mortgage-copy">
-        <h2>Home loans, refinance estimates, and fast mortgage pre-qualification in Illinois.</h2>
+        <h2>Home loans, refinance estimates, and fast mortgage pre-qualification in Illinois and Washington.</h2>
         <p>
-          Get Approved Mortgage, Inc. helps borrowers near Rockford and across Illinois compare home loan options,
+          Get Approved Mortgage, Inc. helps borrowers across Illinois and Washington compare home loan options,
           review mortgage refinance scenarios, and start a faster path toward pre-qualification with a licensed
           mortgage professional.
         </p>
@@ -397,8 +421,28 @@
           <p>Compare fixed-rate mortgages, FHA loans, VA home loans, jumbo loans, DSCR loans, and specialty mortgage programs.</p>
         </article>
         <article>
-          <h3>Illinois Mortgage Support</h3>
+          <h3>Mortgage Support</h3>
           <p>Work with a Rockford-based mortgage team for guidance on purchase loans, refinance estimates, and loan application next steps.</p>
+        </article>
+      </div>
+
+      <div class="local-mortgage-grid">
+        <article>
+          <h3>Illinois Mortgage Pages</h3>
+          <p><a href="illinois-mortgage-broker.html">Illinois Mortgage Broker</a></p>
+          <p><a href="illinois/chicago-mortgage-broker.html">Chicago Mortgage Broker</a></p>
+          <p><a href="illinois/rockford-mortgage-broker.html">Rockford Mortgage Broker</a></p>
+        </article>
+        <article>
+          <h3>Washington Mortgage Pages</h3>
+          <p><a href="washington-mortgage-broker.html">Washington Mortgage Broker</a></p>
+          <p><a href="washington/seattle-mortgage-broker.html">Seattle Mortgage Broker</a></p>
+          <p><a href="washington/spokane-mortgage-broker.html">Spokane Mortgage Broker</a></p>
+        </article>
+        <article>
+          <h3>Start Your Review</h3>
+          <p>Compare local mortgage options, review refinance goals, or begin a secure loan application when you are ready.</p>
+          <p><a href="https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&amp;siteId=7423560722" target="_blank" rel="noopener noreferrer">Start the loan application</a></p>
         </article>
       </div>
     </section>
@@ -413,22 +457,8 @@
         toward the right next step.
       </p>
 
-      <div class="hero-actions">
-        <a class="primary-button" href="calculators.html">Rate Calculators</a>
-        <a class="secondary-button" href="https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&siteId=7423560722" target="_blank" rel="noopener noreferrer">Click here to Start the Loan Application</a>
-      </div>
-
       <div class="hero-banner">
         <img src="assets/mortgage-scene.png" alt="Family standing outside a home at sunset">
-      </div>
-
-      <div class="chatbot-promo">
-        <p class="promo-label">Why use the chatbot</p>
-        <h3>Start with a short conversation instead of filling out a cold mortgage form.</h3>
-        <p>
-          The assistant helps borrowers share whether they are purchasing or refinancing, estimate budget and
-          credit, and understand what programs may fit before speaking with a licensed mortgage specialist.
-        </p>
       </div>
 
       <div class="hero-proof">
@@ -450,9 +480,54 @@
       </div>
 
       <div class="trust-bar" aria-label="Key trust signals">
-        <span>Responsive loan team</span>
-        <span>Clear next steps</span>
-        <span>Mobile-friendly intake</span>
+        <button class="chat-agent-action-button js-chat-jump" type="button">Open the Chat Agent</button>
+        <a class="chat-agent-action-button" href="calculators.html">Rate Calculators</a>
+        <a class="chat-agent-action-button" href="https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&amp;siteId=7423560722" target="_blank" rel="noopener noreferrer">Click here to start the loan application</a>
+      </div>
+    </section>
+
+    <section id="start-intake" class="content-section path-selection-card" aria-labelledby="pathSelectionHeading">
+      <div class="path-selection-copy">
+        <p class="eyebrow">Get the right Mortgage Tailored to Buy a Home, Refinance to get a better rate and term, or access cash to do some debt-consolidation!</p>
+        <h2 id="pathSelectionHeading">Click one of the options below</h2>
+      </div>
+      <div id="pathStartActions" class="path-selection-actions">
+        <button class="path-choice-button path-image-button" type="button" data-intent-choice="Buying a Home" aria-label="Buying a Home">
+          <img class="path-choice-full-image" src="assets/buying-a-home-button.png" alt="Buying a Home">
+        </button>
+        <button class="path-choice-button path-image-button" type="button" data-intent-choice="Refinancing" aria-label="Refinance">
+          <img class="path-choice-full-image" src="assets/refinance-button.png" alt="Refinance">
+        </button>
+      </div>
+      <div id="pathIntake" class="path-intake" hidden>
+        <p id="pathPrompt" class="path-prompt" aria-live="polite"></p>
+        <div id="pathReplies" class="path-replies" aria-label="Path intake replies"></div>
+        <form id="pathForm" class="path-form" autocomplete="on">
+          <label class="sr-only" for="pathInput">Type your response</label>
+          <label class="sr-only" for="pathStateSelect">Select a state</label>
+          <div id="pathStateMap" class="path-state-map" aria-hidden="true" hidden>
+            <img src="assets/us-map.png" alt="">
+          </div>
+          <select id="pathStateSelect" class="state-select" name="address-level1" autocomplete="address-level1" hidden>
+            <option value="">Select a state</option>
+          </select>
+          <div id="pathContactFields" class="path-contact-fields" hidden>
+            <label>
+              <span>Name</span>
+              <input id="pathNameInput" name="name" type="text" placeholder="Enter Name Here" autocomplete="name">
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="pathEmailInput" name="email" type="email" placeholder="person@mail.com" autocomplete="email" inputmode="email">
+            </label>
+            <label>
+              <span>Phone</span>
+              <input id="pathPhoneInput" name="tel" type="tel" placeholder="555-555-5555" autocomplete="tel" inputmode="tel">
+            </label>
+          </div>
+          <input id="pathInput" name="path-answer" type="text" placeholder="Type your answer" autocomplete="off">
+          <button id="pathNextButton" type="submit">Next</button>
+        </form>
       </div>
     </section>
 
@@ -463,9 +538,26 @@
 
       <div class="contact-grid">
         <article class="contact-card">
-          <h3>Get Approved Mortgage, Inc.</h3>
+          <div class="contact-card-header">
+            <h3>Get Approved Mortgage, Inc.</h3>
+            <div class="social-links contact-card-social-links" aria-label="Social media links">
+              <a href="https://www.facebook.com/GetApprovedMortgageInc" target="_blank" rel="noopener noreferrer" aria-label="Get Approved Mortgage Inc on Facebook">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M16 8.049C16 3.603 12.418 0 8 0S0 3.603 0 8.049C0 12.066 2.926 15.396 6.75 16v-5.625H4.719V8.049H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951Z"/>
+                </svg>
+              </a>
+              <a href="https://www.linkedin.com/company/getapprovedmortgageinc" target="_blank" rel="noopener noreferrer" aria-label="Get Approved Mortgage Inc on LinkedIn">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708C16 15.487 15.474 16 14.825 16H1.175C.526 16 0 15.487 0 14.854V1.146Zm4.943 12.248V6.169H2.542v7.225h2.401Zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.821 0-1.359.539-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016Zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4Z"/>
+                </svg>
+              </a>
+              <a class="blog-link" href="https://www.blogger.com/profile/02268856420658190352" target="_blank" rel="noopener noreferrer" aria-label="Get Approved Mortgage Inc blog profile">
+                <img src="assets/blog-logo.png" alt="Get Approved Mortgage Inc blog logo">
+              </a>
+            </div>
+          </div>
           <p>2821 Glenwood Ave<br>Rockford, Illinois 61101</p>
-          <p>T 888-777-2579<br>F 888-358-2440<br><a href="mailto:info@getapproved.mortgage">info@getapproved.mortgage</a></p>
+          <p>T <a href="tel:+18887772579">888-777-2579</a><br><a href="mailto:info@getapproved.mortgage">info@getapproved.mortgage</a></p>
           <div class="licensing-info">
             <p>For licensing information, visit <a href="https://www.nmlsconsumeraccess.org/" target="_blank" rel="noopener noreferrer">nmlsconsumeraccess.org</a></p>
             <img src="assets/equal-housing-opportunity.png" alt="Equal Housing Opportunity logo">
@@ -478,24 +570,6 @@
           <p>Licensed mortgage guidance is available for borrowers reviewing home loans, refinance options, and loan applications in Illinois, Indiana, Michigan, New Jersey, and Washington.</p>
           <p><a href="company-state-licenses.html">Company State Licenses</a></p>
         </article>
-        <article class="contact-card">
-          <h3>Connect</h3>
-          <div class="social-links" aria-label="Social media links">
-            <a href="https://www.facebook.com/GetApprovedMortgageInc" target="_blank" rel="noopener noreferrer" aria-label="Get Approved Mortgage Inc on Facebook">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M16 8.049C16 3.603 12.418 0 8 0S0 3.603 0 8.049C0 12.066 2.926 15.396 6.75 16v-5.625H4.719V8.049H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951Z"/>
-              </svg>
-            </a>
-            <a href="https://www.linkedin.com/company/getapprovedmortgageinc" target="_blank" rel="noopener noreferrer" aria-label="Get Approved Mortgage Inc on LinkedIn">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708C16 15.487 15.474 16 14.825 16H1.175C.526 16 0 15.487 0 14.854V1.146Zm4.943 12.248V6.169H2.542v7.225h2.401Zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.821 0-1.359.539-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016Zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4Z"/>
-              </svg>
-            </a>
-            <a class="blog-link" href="https://www.blogger.com/profile/02268856420658190352" target="_blank" rel="noopener noreferrer" aria-label="Get Approved Mortgage Inc blog profile">
-              <img src="assets/blog-logo.png" alt="Get Approved Mortgage Inc blog logo">
-            </a>
-          </div>
-        </article>
       </div>
     </section>
 
@@ -504,13 +578,13 @@
         <p class="eyebrow">GetApproved Secure Portal</p>
         <h2>Click the button below to get logged into our secure portal. If you don't already have an account, create one so we can get started with your loan application.</h2>
       </div>
-      <a class="primary-button" href="https://idp.elliemae.com/authorize?site_id=7423560722&amp;response_type=code&amp;redirect_uri=https%3A%2F%2Fgamai.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3FfromLogin%3Dtrue%26siteId%3D7423560722&amp;client_id=srtrz0d2&amp;scope=ccbp%20cc&amp;instance_id=11172991&amp;logo_url=https%3A%2F%2Fstore.asset.ecc.mortgagetech.ice.com%2F06c20766-593c-4fb1-a014-ae5d83ef6846&amp;logo_alt_text=Logo&amp;bust=998&amp;apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">GetApproved Secure Portal</a>
+      <a class="primary-button" href="https://idp.elliemae.com/authorize?site_id=7423560722&amp;response_type=code&amp;redirect_uri=https%3A%2F%2Fgamai.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3FfromLogin%3Dtrue%26siteId%3D7423560722&amp;client_id=srtrz0d2&amp;scope=ccbp%20cc&amp;instance_id=11172991&amp;logo_url=https%3A%2F%2Fstore.asset.ecc.mortgagetech.ice.com%2F06c20766-593c-4fb1-a014-ae5d83ef6846&amp;logo_alt_text=Logo&amp;bust=998&amp;apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">Get Approved Secure Portal</a>
     </section>
   </main>
 
   <footer class="site-footer">
     <p>Get Approved Mortgage, Inc. | NMLS#1575396 | 2821 Glenwood Ave, Rockford, IL 61101</p>
-    <p>Phone 888-777-2579 | Email <a href="mailto:info@getapproved.mortgage">info@getapproved.mortgage</a> | <a href="company-state-licenses.html">Company State Licenses</a> | <a href="privacy-policy.html">Privacy Policy</a></p>
+    <p>Phone <a href="tel:+18887772579">888-777-2579</a> | Email <a href="mailto:info@getapproved.mortgage">info@getapproved.mortgage</a> | <a href="company-state-licenses.html">Company State Licenses</a> | <a href="privacy-policy.html">Privacy Policy</a></p>
   </footer>
 
   <script src="script.js"></script>

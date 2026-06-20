@@ -1,3 +1,21 @@
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
+function resetCalculatorPageScrollPosition() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto"
+    });
+  };
+
+  scrollToTop();
+  window.requestAnimationFrame(scrollToTop);
+  window.setTimeout(scrollToTop, 0);
+}
+
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -387,3 +405,5 @@ document.getElementById("rentOwnCalculator").requestSubmit();
 document.getElementById("aprCalculator").requestSubmit();
 document.getElementById("debtConsolidationCalculator").requestSubmit();
 document.getElementById("prepaymentCalculator").requestSubmit();
+resetCalculatorPageScrollPosition();
+window.addEventListener("pageshow", resetCalculatorPageScrollPosition);

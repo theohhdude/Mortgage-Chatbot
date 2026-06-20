@@ -2,17 +2,42 @@ const chatWindow = document.getElementById("chatWindow");
 const quickReplies = document.getElementById("quickReplies");
 const chatForm = document.getElementById("chatForm");
 const chatInput = document.getElementById("chatInput");
+const chatBotPanel = document.getElementById("chatbot");
 const stateSelect = document.getElementById("stateSelect");
 const stateOptions = document.getElementById("stateOptions");
+const chatContactFields = document.getElementById("chatContactFields");
+const chatNameInput = document.getElementById("chatNameInput");
+const chatPhoneInput = document.getElementById("chatPhoneInput");
+const chatEmailInput = document.getElementById("chatEmailInput");
 const chatJumpLinks = document.querySelectorAll(".js-chat-jump");
+const pathStartActions = document.getElementById("pathStartActions");
+const pathChoiceButtons = document.querySelectorAll(".path-choice-button");
+const pathIntake = document.getElementById("pathIntake");
+const pathPrompt = document.getElementById("pathPrompt");
+const pathReplies = document.getElementById("pathReplies");
+const pathSelectionCard = document.querySelector(".path-selection-card");
+const pathForm = document.getElementById("pathForm");
+const pathInput = document.getElementById("pathInput");
+const pathNextButton = document.getElementById("pathNextButton");
+const pathStateMap = document.getElementById("pathStateMap");
+const pathStateSelect = document.getElementById("pathStateSelect");
+const pathContactFields = document.getElementById("pathContactFields");
+const pathNameInput = document.getElementById("pathNameInput");
+const pathEmailInput = document.getElementById("pathEmailInput");
+const pathPhoneInput = document.getElementById("pathPhoneInput");
 const ratesGrid = document.getElementById("ratesGrid");
 const ratesUpdated = document.getElementById("ratesUpdated");
 const ratesDisclaimer = document.getElementById("ratesDisclaimer");
 
 chatForm.noValidate = true;
+pathForm.noValidate = true;
+
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
 
 const loanApplicationUrl = "https://gamai.mymortgage-online.com/loan-app/?workFlowId=261281&siteId=7423560722";
-const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbxdfAkFxQ2i8z1orh6n4gwu5qd_G_YVnKOxqLDco0j9sdmzDe4kF4GaRwx4BHpz78NVZw/exec";
+const googleSheetsWebAppUrl = "https://script.google.com/macros/s/AKfycbwwBdMF4SfMTF6-WyKc0qhrCQYP_6gX4mN_MX0-uVqVu9u0wrfdfigo2ufOu8Q618sedA/exec";
 const mortgageRatesWebAppUrl = "https://script.google.com/macros/s/AKfycbz8edJZakd0G8LpuwBKo7i7QsdkS2vnCnZxqDay5fzmiuQnMRn8bxBvhkeESBmqzVP6fQ/exec";
 const contactConsentDisclosure = "By selecting I Agree, you authorize Get Approved Mortgage, Inc. to contact you at the phone number and email you provided about mortgage products and services, including by call, text message, or email. Calls or texts may use automated technology, prerecorded messages, or artificial voice. Consent is not required to buy goods or services. Message and data rates may apply. Reply STOP to opt out.";
 
@@ -62,6 +87,27 @@ function createLeadId() {
   return `lead-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
+function resetHomePageScrollPosition() {
+  const hash = window.location.hash;
+  const shouldHonorHash = hash && hash !== "#top";
+
+  if (shouldHonorHash) {
+    return;
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto"
+    });
+  };
+
+  scrollToTop();
+  window.requestAnimationFrame(scrollToTop);
+  window.setTimeout(scrollToTop, 0);
+}
+
 const states = [
   "Alabama", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
   "Florida", "Georgia", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
@@ -72,58 +118,52 @@ const states = [
   "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
 ];
 
-const lead = {
-  leadId: createLeadId(),
-  status: "Started",
-  submittedAt: "",
-  lastUpdatedAt: "",
-  completedAt: "",
-  fullName: "",
-  email: "",
-  phone: "",
-  intent: "",
-  firstTimeBuyer: "",
-  purchasePropertyUse: "",
-  refinancePurpose: "",
-  state: "",
-  creditRange: "",
-  downPayment: "",
-  purchasePriceRange: "",
-  desiredHomeType: "",
-  bankruptcy: "",
-  veteran: "",
-  borrowAmount: "",
-  equity: "",
-  homeValue: "",
-  refinancePropertyUse: "",
-  currentHomeType: "",
-  currentMortgage: "",
-  interestRate: "",
-  secondMortgage: "",
-  amountOwed: "",
-  adverseCreditEvents: "",
-  bestContactTime: "",
-  wantsApplication: "",
-  contactConsent: "",
-  consentDisclosure: "",
-  consentedAt: ""
-};
+function createLeadState() {
+  return {
+    leadId: createLeadId(),
+    status: "Started",
+    submittedAt: "",
+    lastUpdatedAt: "",
+    completedAt: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    intent: "",
+    firstTimeBuyer: "",
+    purchasePropertyUse: "",
+    refinancePurpose: "",
+    state: "",
+    creditRange: "",
+    downPayment: "",
+    purchasePriceRange: "",
+    desiredHomeType: "",
+    bankruptcy: "",
+    veteran: "",
+    borrowAmount: "",
+    equity: "",
+    homeValue: "",
+    refinancePropertyUse: "",
+    currentHomeType: "",
+    currentMortgage: "",
+    interestRate: "",
+    secondMortgage: "",
+    amountOwed: "",
+    adverseCreditEvents: "",
+    bestContactTime: "",
+    wantsApplication: "",
+    contactConsent: "",
+    consentDisclosure: "",
+    consentedAt: ""
+  };
+}
+
+const lead = createLeadState();
+const pathLead = createLeadState();
 
 const initialFlow = [
   {
-    key: "fullName",
-    prompt: "If so, I'd love to help you get started? Can I have your name? Otherwise, scroll below to see some of the products we offer.",
-    placeholder: "Enter Name Here"
-  },
-  {
-    key: "email",
-    prompt: "Hi, what would be the best email address to use for our communications?",
-    inputType: "email"
-  },
-  {
-    key: "phone",
-    prompt: "What is the best phone number to contact you?",
-    inputType: "tel"
+    key: "contactDetails",
+    prompt: "If so, I'd love to help you get started. Please enter your name, phone number, and email. Otherwise, scroll below to see some of the products we offer."
   },
   {
     key: "intent",
@@ -132,10 +172,34 @@ const initialFlow = [
   }
 ];
 
+const contactDetailsQuestion = {
+  key: "contactDetails",
+  prompt: "Great, I have the basics. Please enter your contact details so we can follow up."
+};
+
+const closingQuestions = [
+  {
+    key: "bestContactTime",
+    prompt: "When would be the best time to reach you?",
+    replies: ["Morning", "Afternoon", "Evening"]
+  },
+  {
+    key: "wantsApplication",
+    prompt: "That wraps up this set of questions. Would you like to get the loan application process started?",
+    replies: ["Yes", "No"]
+  },
+  {
+    key: "contactConsent",
+    prompt: contactConsentDisclosure,
+    replies: ["I Agree", "No Thanks"],
+    end: true
+  }
+];
+
 const purchaseQuestions = [
   {
     key: "state",
-    prompt: () => lead.firstTimeBuyer === "Yes"
+    prompt: (leadContext = lead) => leadContext.firstTimeBuyer === "Yes"
       ? "Great, you may qualify for first-time homebuyer incentives. What state are you looking to buy in?"
       : "Great, so you are familiar with the process. Let's get started with the state you plan on buying a home in.",
     useStateList: true
@@ -148,7 +212,7 @@ const purchaseQuestions = [
   {
     key: "creditRange",
     prompt: "Do you have an idea of what your credit score is around?",
-    replies: ["750+", "750-650", "650-550", "550 to 450"]
+    replies: ["750+", "749-700", "699-651", "650-600", "599-550", "550 to 450"]
   },
   {
     key: "downPayment",
@@ -158,12 +222,12 @@ const purchaseQuestions = [
   {
     key: "purchasePriceRange",
     prompt: "What price range do you have in mind?",
-    replies: ["Above $500k", "$500k to $300k", "$300k to $200k", "$200k and below"]
+    replies: ["Above $1MM", "$999k to $750k", "$749k to $500k", "$499k to $250k", "$249k - $100k", "$100k and below"]
   },
   {
     key: "desiredHomeType",
     prompt: "What type of property are you looking for?",
-    replies: ["Single Family Home", "Condo", "Town-House", "Multi-Family Home", "Commercial"]
+    replies: ["Single Family Home", "Condo", "Town-House", "Multi-Family Home", "Commercial", "Agricultural"]
   },
   {
     key: "bankruptcy",
@@ -212,27 +276,27 @@ const refinanceQuestions = [
   {
     key: "creditRange",
     prompt: "Do you have an idea of what your credit score is around?",
-    replies: ["750+", "750-650", "650-550", "550 to 450"]
+    replies: ["750+", "749-700", "699-651", "650-600", "599-550", "550 to 450"]
   },
   {
     key: "borrowAmount",
     prompt: "How much are you looking to borrow?",
-    replies: ["Above $500k", "$500k to $300k", "$300k to $200k", "$200k and below"]
+    replies: ["Above $1MM", "$999k to $750K", "$749K To $500k", "$499k to $300k", "$299k to $200k", "$200k or Below"]
   },
   {
     key: "equity",
     prompt: "How much equity do you have in your home?",
-    replies: ["$500k or more", "$500k to $400k", "$400k to $300k", "$300k or lower"]
+    replies: ["Above $1MM", "$999k to $750K", "$749K To $500k", "$499k to $300k", "$299k to $200k", "$200k or Below"]
   },
   {
     key: "homeValue",
     prompt: "Do you know how much your home is currently worth?",
-    replies: ["$500k or more", "$500k to $400k", "$400k to $300k", "$300k or lower"]
+    replies: ["Above $1MM", "$999k to $750K", "$749K To $500k", "$499k to $300k", "$299k to $200k", "$200k or Below"]
   },
   {
     key: "currentHomeType",
     prompt: "What type of home do you currently own?",
-    replies: ["Single Family Home", "Condo", "Town-House", "Multi-Family Home"]
+    replies: ["Single Family Home", "Condo", "Town-House", "Multi-Family Home", "Commercial", "Agricultural"]
   },
   {
     key: "currentMortgage",
@@ -242,7 +306,7 @@ const refinanceQuestions = [
   {
     key: "interestRate",
     prompt: "What is your current interest rate around?",
-    replies: ["No Mortgage", "Above 9%", "Above 8%", "Above 7%", "Above 6%", "Above 5%", "Under 5%"]
+    replies: ["No Mortgage", "Don't Know", "Above 9%", "Above 8%", "Above 7%", "Above 6%", "Above 5%", "Above 4%", "Above 3%"]
   },
   {
     key: "secondMortgage",
@@ -252,7 +316,7 @@ const refinanceQuestions = [
   {
     key: "amountOwed",
     prompt: "How much do you owe on the home?",
-    replies: ["$250k or more", "$200k to $150k", "$150k to $100k", "$100k to $50k", "$50k or less"]
+    replies: ["$500k or more", "$250k or more", "$200k to $150k", "$150k to $100k", "$100k to $50k", "$50k or less"]
   },
   {
     key: "bankruptcy",
@@ -262,7 +326,7 @@ const refinanceQuestions = [
   {
     key: "adverseCreditEvents",
     prompt: "Do you have any judgments, foreclosures, or student loan defaults?",
-    replies: ["Yes", "No", "Judgments", "Foreclosures", "Student Loan Defaults"]
+    replies: ["Yes", "No", "Judgments", "Foreclosures", "Student Loan Defaults", "Other Defaults"]
   },
   {
     key: "veteran",
@@ -287,9 +351,15 @@ const refinanceQuestions = [
   }
 ];
 
+const pathPurchaseQuestions = purchaseQuestions.slice(0, -3).concat(contactDetailsQuestion, closingQuestions);
+const pathRefinanceQuestions = refinanceQuestions.slice(0, -3).concat(contactDetailsQuestion, closingQuestions);
+
 let activeFlow = [...initialFlow];
 let stepIndex = 0;
 let historyStack = [];
+let pathActiveFlow = [];
+let pathStepIndex = 0;
+let pathHistoryStack = [];
 
 function getFirstName() {
   return lead.fullName.trim().split(/\s+/)[0] || "there";
@@ -342,8 +412,8 @@ function isPhoneStep() {
   return step?.key === "phone";
 }
 
-function getPrompt(step) {
-  return typeof step.prompt === "function" ? step.prompt() : step.prompt;
+function getPrompt(step, leadContext = lead) {
+  return typeof step.prompt === "function" ? step.prompt(leadContext) : step.prompt;
 }
 
 function getReplies(step) {
@@ -378,10 +448,15 @@ function setReplies(options = []) {
 }
 
 function configureInput(step) {
+  const isContactDetailsStep = step.key === "contactDetails";
   chatInput.value = "";
   stateSelect.value = "";
   stateSelect.hidden = !step.useStateList;
+  stateSelect.name = step.useStateList ? "address-level1" : "unused-state";
+  chatContactFields.hidden = !isContactDetailsStep;
+  chatInput.hidden = isContactDetailsStep;
   chatInput.type = step.inputType || "text";
+  chatInput.name = isContactDetailsStep ? "unused-message" : getInputNameValue(step);
   chatInput.placeholder = step.placeholder || (step.useStateList ? "Start typing a state" : "Type your answer");
   chatInput.classList.toggle("attention-placeholder", step.key === "fullName");
   chatInput.removeAttribute("pattern");
@@ -405,6 +480,10 @@ function configureInput(step) {
     chatInput.placeholder = "555-555-5555";
     chatInput.setAttribute("pattern", "^(?:\\+?1[\\s.-]?)?(?:\\([2-9]\\d{2}\\)|[2-9]\\d{2})[\\s.-]?[2-9]\\d{2}[\\s.-]?\\d{4}$");
   }
+
+  if (isContactDetailsStep) {
+    chatNameInput.focus();
+  }
 }
 
 function getAutocompleteValue(step) {
@@ -416,6 +495,30 @@ function getAutocompleteValue(step) {
   };
 
   return autocompleteMap[step.key] || "off";
+}
+
+function getInputNameValue(step) {
+  const nameMap = {
+    fullName: "name",
+    email: "email",
+    phone: "tel",
+    state: "address-level1"
+  };
+
+  return nameMap[step.key] || "message";
+}
+
+function getChatContactDetails() {
+  return {
+    fullName: normalizeName(chatNameInput.value.trim()),
+    phone: chatPhoneInput.value.trim(),
+    email: chatEmailInput.value.trim()
+  };
+}
+
+function flagChatContactField(field, shouldFlag) {
+  field.classList.toggle("attention-placeholder", shouldFlag);
+  field.setAttribute("aria-invalid", shouldFlag ? "true" : "false");
 }
 
 function askCurrentStep() {
@@ -551,7 +654,8 @@ function appendPurchaseFlowAfterFirstTime(answer) {
 }
 
 function finishFlow() {
-  submitLeadToGoogleSheets("Completed");
+  submitLeadToGoogleSheets("Partial");
+  lead.status = "Completed";
 
   if (lead.contactConsent !== "Yes") {
     addMessage("bot", "Thank you. We captured your request and will only contact you as permitted.");
@@ -573,16 +677,28 @@ function hasEnoughLeadInfoToSubmit() {
   return Boolean(lead.fullName && (lead.email || lead.phone));
 }
 
-function buildLeadSubmission(status = "Partial") {
+function hasEnoughLeadInfo(leadContext) {
+  return Boolean(leadContext.fullName && (leadContext.email || leadContext.phone));
+}
+
+function hasCompletedFirstThreeChatbotQuestions() {
+  return Boolean(lead.fullName && lead.email && lead.phone);
+}
+
+function shouldDelayChatbotLeadSubmission(status = "Partial", leadContext = lead) {
+  return leadContext === lead && status !== "Completed" && !hasCompletedFirstThreeChatbotQuestions();
+}
+
+function buildLeadSubmission(status = "Partial", leadContext = lead) {
   const now = new Date().toISOString();
 
-  if (!lead.submittedAt) {
-    lead.submittedAt = now;
+  if (!leadContext.submittedAt) {
+    leadContext.submittedAt = now;
   }
 
-  lead.status = status;
-  lead.lastUpdatedAt = now;
-  lead.completedAt = status === "Completed" ? now : lead.completedAt || "";
+  leadContext.status = status;
+  leadContext.lastUpdatedAt = now;
+  leadContext.completedAt = status === "Completed" ? now : leadContext.completedAt || "";
 
   return leadSubmissionFields.reduce((payload, field) => {
     if (field === "source") {
@@ -590,18 +706,42 @@ function buildLeadSubmission(status = "Partial") {
       return payload;
     }
 
-    payload[field] = lead[field] || "";
+    payload[field] = leadContext[field] || "";
     return payload;
   }, {});
 }
 
-function submitLeadToGoogleSheets(status = "Partial") {
-  if (!googleSheetsWebAppUrl || !hasEnoughLeadInfoToSubmit()) {
+function getNextStepIncrement(flow, currentIndex, leadContext) {
+  let increment = 1;
+  const currentStep = flow[currentIndex];
+  const nextStep = flow[currentIndex + 1];
+
+  if (
+    currentStep?.key === "currentMortgage"
+    && leadContext.currentMortgage === "No"
+    && nextStep?.key === "interestRate"
+  ) {
+    increment += 1;
+  }
+
+  if (
+    currentStep?.key === "secondMortgage"
+    && leadContext.currentMortgage === "No"
+    && nextStep?.key === "amountOwed"
+  ) {
+    increment += 1;
+  }
+
+  return increment;
+}
+
+function submitLeadPayload(status = "Partial", leadContext = lead) {
+  if (!googleSheetsWebAppUrl || !hasEnoughLeadInfo(leadContext) || shouldDelayChatbotLeadSubmission(status, leadContext)) {
     return;
   }
 
   const formData = new FormData();
-  formData.append("payload", JSON.stringify(buildLeadSubmission(status)));
+  formData.append("payload", JSON.stringify(buildLeadSubmission(status, leadContext)));
 
   fetch(googleSheetsWebAppUrl, {
     method: "POST",
@@ -612,8 +752,12 @@ function submitLeadToGoogleSheets(status = "Partial") {
   });
 }
 
+function submitLeadToGoogleSheets(status = "Partial") {
+  submitLeadPayload(status, lead);
+}
+
 function submitLeadOnExit() {
-  if (!googleSheetsWebAppUrl || !hasEnoughLeadInfoToSubmit() || lead.status === "Completed") {
+  if (!googleSheetsWebAppUrl || !hasEnoughLeadInfoToSubmit() || !hasCompletedFirstThreeChatbotQuestions() || lead.status === "Completed") {
     return;
   }
 
@@ -749,11 +893,420 @@ function loadMortgageRates() {
     });
 }
 
-function submitAnswer(rawAnswer) {
+function getPathStep() {
+  return pathActiveFlow[pathStepIndex];
+}
+
+function configurePathInput(step) {
+  const hasReplyButtons = getReplies(step).length > 0;
+  const usesContactFields = step.key === "contactDetails";
+
+  pathInput.value = "";
+  pathStateSelect.value = "";
+  pathNameInput.value = pathLead.fullName || "";
+  pathEmailInput.value = pathLead.email || "";
+  pathPhoneInput.value = pathLead.phone || "";
+  [pathNameInput, pathEmailInput, pathPhoneInput].forEach((field) => {
+    field.classList.remove("attention-placeholder");
+  });
+  pathStateSelect.hidden = !step.useStateList;
+  pathStateMap.hidden = !step.useStateList;
+  pathNextButton.hidden = Boolean(step.useStateList);
+  pathForm.hidden = hasReplyButtons && !step.useStateList;
+  pathContactFields.hidden = !usesContactFields;
+  pathInput.hidden = Boolean(step.useStateList || hasReplyButtons || usesContactFields);
+  pathInput.type = step.inputType || "text";
+  pathInput.name = getPathInputNameValue(step);
+  pathInput.placeholder = step.placeholder || (step.useStateList ? "Start typing a state" : "Type your answer");
+  pathInput.setAttribute("autocomplete", getAutocompleteValue(step));
+  pathInput.classList.toggle("attention-placeholder", step.key === "fullName" || usesContactFields);
+  pathInput.removeAttribute("pattern");
+  pathInput.removeAttribute("inputmode");
+
+  if (step.inputType === "email") {
+    pathInput.placeholder = "person@mail.com";
+    pathInput.setAttribute("inputmode", "email");
+    pathInput.setAttribute("pattern", "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$");
+  }
+
+  if (step.inputType === "tel") {
+    pathInput.setAttribute("inputmode", "tel");
+    pathInput.placeholder = "555-555-5555";
+    pathInput.setAttribute("pattern", "^(?:\\+?1[\\s.-]?)?(?:\\([2-9]\\d{2}\\)|[2-9]\\d{2})[\\s.-]?[2-9]\\d{2}[\\s.-]?\\d{4}$");
+  }
+
+}
+
+function getPathInputNameValue(step) {
+  if (step.useStateList) {
+    return "address-level1";
+  }
+
+  return getInputNameValue(step);
+}
+
+function getPathContactDetails() {
+  return {
+    fullName: normalizeName(pathNameInput.value.trim()),
+    email: pathEmailInput.value.trim(),
+    phone: pathPhoneInput.value.trim()
+  };
+}
+
+function flagPathContactField(field, shouldFlag) {
+  field.classList.toggle("attention-placeholder", shouldFlag);
+}
+
+function setPathReplies(options = []) {
+  pathReplies.innerHTML = "";
+  pathReplies.dataset.stepKey = getPathStep()?.key || "";
+
+  if (pathHistoryStack.length) {
+    const backButton = document.createElement("button");
+    backButton.type = "button";
+    backButton.className = "path-reply-button path-back-button";
+    const backIcon = document.createElement("span");
+    backIcon.className = "path-reply-icon";
+    backIcon.textContent = "<";
+    backIcon.setAttribute("aria-hidden", "true");
+    const backLabel = document.createElement("span");
+    backLabel.textContent = "Back";
+    backButton.append(backIcon, backLabel);
+    backButton.addEventListener("click", goBackPath);
+    pathReplies.appendChild(backButton);
+  }
+
+  options.forEach((option) => {
+    const button = document.createElement("button");
+    const optionValue = option.toLowerCase();
+    const shouldUseTextOnly = getPathStep()?.key === "adverseCreditEvents" && ["yes", "no"].includes(optionValue);
+    const isImageOnlyOption = !shouldUseTextOnly
+      && ["yes", "no", "primary residence", "investment property", "vacation home"].includes(optionValue);
+    const usesTextOnlyButtons = !isImageOnlyOption;
+    button.type = "button";
+    button.className = usesTextOnlyButtons
+      ? "path-reply-button path-text-reply-button"
+      : isImageOnlyOption
+        ? "path-reply-button path-image-reply-button"
+        : "path-reply-button";
+    const replyImage = usesTextOnlyButtons ? null : getPathReplyImage(option);
+    const photo = usesTextOnlyButtons ? null : document.createElement(isImageOnlyOption ? "img" : "span");
+
+    if (isImageOnlyOption) {
+      photo.className = "path-reply-full-image";
+      photo.src = replyImage.src;
+      photo.alt = option;
+    } else if (photo) {
+      photo.className = "path-reply-photo";
+      photo.style.setProperty("--reply-image", `url("${replyImage.src}")`);
+      photo.style.setProperty("--reply-position", replyImage.position);
+      photo.setAttribute("aria-hidden", "true");
+    }
+
+    const label = document.createElement("span");
+    label.textContent = option;
+    label.className = isImageOnlyOption ? "sr-only" : "";
+    if (photo) {
+      button.append(photo, label);
+    } else {
+      button.append(label);
+    }
+    button.addEventListener("click", () => submitPathAnswer(option));
+    pathReplies.appendChild(button);
+  });
+}
+
+function getPathReplyImage(option) {
+  const value = option.toLowerCase();
+
+  if (value === "yes") {
+    return { src: "assets/yes-button.png", position: "50% 50%" };
+  }
+
+  if (value === "no") {
+    return { src: "assets/no-button.png", position: "50% 50%" };
+  }
+
+  if (value === "primary residence") {
+    return { src: "assets/primary-residence-button.png", position: "50% 50%" };
+  }
+
+  if (value === "investment property") {
+    return { src: "assets/investment-property-button.png", position: "50% 50%" };
+  }
+
+  if (value === "vacation home") {
+    return { src: "assets/vacation-home-button.png", position: "50% 50%" };
+  }
+
+  if (value.includes("refinance") || value.includes("cash") || value.includes("debt") || value.includes("term")) {
+    return { src: "assets/hero.jpg", position: "55% 42%" };
+  }
+
+  if (value.includes("buy") || value.includes("home") || value.includes("primary")) {
+    return { src: "assets/mortgage-scene.png", position: "78% 58%" };
+  }
+
+  if (value.includes("investment") || value.includes("rental")) {
+    return { src: "assets/mortgage-scene.png", position: "63% 44%" };
+  }
+
+  if (value.includes("vacation")) {
+    return { src: "assets/hero.jpg", position: "50% 50%" };
+  }
+
+  if (value.includes("yes") || value.includes("agree") || value.includes("excellent") || value.includes("good")) {
+    return { src: "assets/mortgage-scene.png", position: "82% 62%" };
+  }
+
+  if (value.includes("no") || value.includes("thanks") || value.includes("fair") || value.includes("rebuilding")) {
+    return { src: "assets/hero.jpg", position: "26% 55%" };
+  }
+
+  if (value.includes("morning")) {
+    return { src: "assets/mortgage-scene.png", position: "18% 54%" };
+  }
+
+  if (value.includes("afternoon")) {
+    return { src: "assets/hero.jpg", position: "48% 55%" };
+  }
+
+  if (value.includes("evening")) {
+    return { src: "assets/mortgage-scene.png", position: "12% 76%" };
+  }
+
+  return { src: "assets/mortgage-scene.png", position: "72% 54%" };
+}
+
+function savePathSnapshot() {
+  pathHistoryStack.push({
+    pathActiveFlow: [...pathActiveFlow],
+    pathStepIndex,
+    pathLead: { ...pathLead }
+  });
+}
+
+function goBackPath() {
+  const previous = pathHistoryStack.pop();
+
+  if (!previous) {
+    pathIntake.hidden = true;
+    pathForm.hidden = false;
+    pathStartActions.hidden = false;
+    pathReplies.innerHTML = "";
+    pathPrompt.textContent = "";
+    return;
+  }
+
+  pathActiveFlow = [...previous.pathActiveFlow];
+  pathStepIndex = previous.pathStepIndex;
+  Object.keys(pathLead).forEach((key) => {
+    pathLead[key] = previous.pathLead[key] || "";
+  });
+  pathForm.hidden = false;
+
+  if (!pathActiveFlow.length) {
+    pathIntake.hidden = true;
+    pathStartActions.hidden = false;
+    pathReplies.innerHTML = "";
+    pathPrompt.textContent = "";
+    return;
+  }
+
+  askPathStep();
+}
+
+function askPathStep() {
+  const step = getPathStep();
+
+  if (!step) {
+    finishPathFlow();
+    return;
+  }
+
+  pathPrompt.textContent = getPrompt(step, pathLead);
+  configurePathInput(step);
+  setPathReplies(getReplies(step));
+  scrollPathCardToTopOnMobile();
+}
+
+function scrollPathCardToTopOnMobile() {
+  if (!pathSelectionCard || window.innerWidth > 760) {
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    const cardTop = pathSelectionCard.getBoundingClientRect().top + window.scrollY - 12;
+    window.scrollTo({
+      top: Math.max(0, cardTop),
+      behavior: "smooth"
+    });
+  });
+}
+
+function appendPathFlowForIntent(intentAnswer) {
+  savePathSnapshot();
+  const intent = classifyIntent(intentAnswer);
+
+  if (!intent) {
+    pathPrompt.textContent = "Please choose Buying a Home or Refinancing.";
+    setPathReplies(["Buying a Home", "Refinancing"]);
+    return false;
+  }
+
+  pathLead.intent = intent;
+
+  if (intent === "Refinance") {
+    pathActiveFlow = pathRefinanceQuestions;
+    pathStepIndex = 0;
+    return true;
+  }
+
+  pathActiveFlow = [{
+    key: "firstTimeBuyer",
+    prompt: "Are you a first-time home buyer?",
+    replies: ["Yes", "No"]
+  }];
+  pathStepIndex = 0;
+  return true;
+}
+
+function appendPathPurchaseFlow(answer) {
+  pathLead.firstTimeBuyer = normalizeYesNo(answer);
+  pathActiveFlow = pathPurchaseQuestions;
+  pathStepIndex = 0;
+}
+
+function finishPathFlow() {
+  submitLeadPayload("Completed", pathLead);
+  pathPrompt.textContent = pathLead.contactConsent === "Yes"
+    ? "Thank you. One of our loan professionals will contact you soon."
+    : "Thank you. We captured your request and will only contact you as permitted.";
+  pathReplies.innerHTML = "";
+  pathForm.hidden = true;
+  pathInput.hidden = false;
+  pathNextButton.hidden = false;
+  pathStateSelect.hidden = true;
+  pathStateMap.hidden = true;
+  pathContactFields.hidden = true;
+
+  if (pathLead.contactConsent === "Yes" && pathLead.wantsApplication === "Yes") {
+    const link = document.createElement("a");
+    link.className = "loan-application-button";
+    link.href = loanApplicationUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Start Loan Application";
+    pathReplies.appendChild(link);
+  }
+
+  scrollPathCardToTopOnMobile();
+}
+
+function submitPathAnswer(rawAnswer) {
+  const step = getPathStep();
   const answer = rawAnswer.trim();
 
-  if (!answer) {
-    if (getCurrentStep()?.key === "fullName") {
+  if (!step) {
+    return;
+  }
+
+  if (!answer && step.key !== "contactDetails") {
+    if (getPathStep()?.key === "fullName") {
+      pathInput.classList.add("attention-placeholder");
+    }
+
+    return;
+  }
+
+  savePathSnapshot();
+
+  if (step.key === "contactDetails") {
+    const contactDetails = getPathContactDetails();
+    const missingName = !contactDetails.fullName;
+    const invalidEmail = !isValidEmail(contactDetails.email);
+    const invalidPhone = !isValidUsPhone(contactDetails.phone);
+
+    flagPathContactField(pathNameInput, missingName);
+    flagPathContactField(pathEmailInput, invalidEmail);
+    flagPathContactField(pathPhoneInput, invalidPhone);
+
+    if (missingName || invalidEmail || invalidPhone) {
+      pathHistoryStack.pop();
+      pathPrompt.textContent = "Please enter your name, a valid email address, and a valid US phone number.";
+      (missingName ? pathNameInput : invalidEmail ? pathEmailInput : pathPhoneInput).focus();
+      return;
+    }
+
+    pathLead.fullName = contactDetails.fullName;
+    pathLead.email = contactDetails.email;
+    pathLead.phone = formatUsPhone(contactDetails.phone);
+  } else if (step.key === "email" && !isValidEmail(answer)) {
+    pathHistoryStack.pop();
+    pathPrompt.textContent = "Please enter a valid email address in this format: person@mail.com.";
+    pathInput.value = "";
+    pathInput.focus();
+    return;
+  }
+
+  if (step.key === "phone" && !isValidUsPhone(answer)) {
+    pathHistoryStack.pop();
+    pathPrompt.textContent = "Please enter a valid US phone number, like 555-555-5555.";
+    pathInput.value = "";
+    pathInput.focus();
+    return;
+  }
+
+  if (step.key === "fullName") {
+    pathLead.fullName = normalizeName(answer);
+  } else if (step.key === "contactDetails") {
+    // Contact details are handled together above.
+  } else if (step.key === "firstTimeBuyer") {
+    appendPathPurchaseFlow(answer);
+    askPathStep();
+    return;
+  } else if (step.key === "contactConsent") {
+    const consented = /agree|yes/i.test(answer);
+    pathLead.contactConsent = consented ? "Yes" : "No";
+    pathLead.consentDisclosure = contactConsentDisclosure;
+    pathLead.consentedAt = consented ? new Date().toISOString() : "";
+  } else if (["bankruptcy", "veteran", "currentMortgage", "secondMortgage", "wantsApplication"].includes(step.key)) {
+    pathLead[step.key] = normalizeYesNo(answer);
+  } else {
+    pathLead[step.key] = answer;
+  }
+
+  pathStepIndex += getNextStepIncrement(pathActiveFlow, pathStepIndex, pathLead);
+  submitLeadPayload("Partial", pathLead);
+
+  if (step.end || pathStepIndex >= pathActiveFlow.length) {
+    finishPathFlow();
+    return;
+  }
+
+  askPathStep();
+}
+
+function startPathIntake(intent) {
+  Object.assign(pathLead, createLeadState());
+  pathHistoryStack = [];
+  pathIntake.hidden = false;
+  pathForm.hidden = false;
+  pathReplies.innerHTML = "";
+  pathStartActions.hidden = true;
+
+  if (appendPathFlowForIntent(intent)) {
+    askPathStep();
+  }
+}
+
+function submitAnswer(rawAnswer) {
+  let answer = rawAnswer.trim();
+  const currentStep = getCurrentStep();
+  const isContactDetailsStep = currentStep?.key === "contactDetails";
+
+  if (!answer && !isContactDetailsStep) {
+    if (currentStep?.key === "fullName") {
       chatInput.classList.add("attention-placeholder");
     }
 
@@ -775,6 +1328,29 @@ function submitAnswer(rawAnswer) {
 
   const step = getCurrentStep();
 
+  if (step.key === "contactDetails") {
+    const contactDetails = getChatContactDetails();
+    const missingName = !contactDetails.fullName;
+    const invalidPhone = !isValidUsPhone(contactDetails.phone);
+    const invalidEmail = !isValidEmail(contactDetails.email);
+
+    flagChatContactField(chatNameInput, missingName);
+    flagChatContactField(chatPhoneInput, invalidPhone);
+    flagChatContactField(chatEmailInput, invalidEmail);
+
+    if (missingName || invalidPhone || invalidEmail) {
+      addMessage("bot", "Please enter your name, a valid US phone number, and a valid email address.");
+      const firstInvalidField = missingName ? chatNameInput : invalidPhone ? chatPhoneInput : chatEmailInput;
+      firstInvalidField.focus();
+      return;
+    }
+
+    answer = "Contact information submitted.";
+    lead.fullName = contactDetails.fullName;
+    lead.phone = formatUsPhone(contactDetails.phone);
+    lead.email = contactDetails.email;
+  }
+
   if (step.key === "email" && !isValidEmail(answer)) {
     addMessage("bot", "Please enter a valid email address in this format: person@mail.com.");
     chatInput.value = "";
@@ -792,7 +1368,9 @@ function submitAnswer(rawAnswer) {
   saveHistorySnapshot();
   addMessage("user", answer);
 
-  if (step.key === "fullName") {
+  if (step.key === "contactDetails") {
+    // Contact values are saved together above to support browser autofill.
+  } else if (step.key === "fullName") {
     lead.fullName = normalizeName(answer);
   } else if (step.key === "intent" && !appendNextFlowForIntent(answer)) {
     chatInput.value = "";
@@ -810,7 +1388,7 @@ function submitAnswer(rawAnswer) {
     lead[step.key] = answer;
   }
 
-  stepIndex += 1;
+  stepIndex += getNextStepIncrement(activeFlow, stepIndex, lead);
   chatInput.value = "";
 
   if (step.end || stepIndex >= activeFlow.length) {
@@ -851,7 +1429,8 @@ function scrollChatFormIntoActionPosition() {
   });
 
   window.setTimeout(() => {
-    chatInput.focus({ preventScroll: true });
+    const focusTarget = chatContactFields.hidden ? chatInput : chatNameInput;
+    focusTarget.focus({ preventScroll: true });
   }, 260);
 }
 
@@ -864,6 +1443,11 @@ states.forEach((state) => {
   selectOption.value = state;
   selectOption.textContent = state;
   stateSelect.appendChild(selectOption);
+
+  const pathSelectOption = document.createElement("option");
+  pathSelectOption.value = state;
+  pathSelectOption.textContent = state;
+  pathStateSelect.appendChild(pathSelectOption);
 });
 
 chatForm.addEventListener("submit", (event) => {
@@ -879,6 +1463,19 @@ stateSelect.addEventListener("change", () => {
   submitAnswer(stateSelect.value);
 });
 
+pathForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  submitPathAnswer(pathInput.value);
+});
+
+pathStateSelect.addEventListener("change", () => {
+  if (!pathStateSelect.value) {
+    return;
+  }
+
+  submitPathAnswer(pathStateSelect.value);
+});
+
 chatInput.addEventListener("input", () => {
   chatInput.classList.remove("attention-placeholder");
 
@@ -889,8 +1486,44 @@ chatInput.addEventListener("input", () => {
   chatInput.value = formatUsPhone(chatInput.value);
 });
 
+pathInput.addEventListener("input", () => {
+  pathInput.classList.remove("attention-placeholder");
+
+  if (getPathStep()?.key !== "phone") {
+    return;
+  }
+
+  pathInput.value = formatUsPhone(pathInput.value);
+});
+
+pathPhoneInput.addEventListener("input", () => {
+  pathPhoneInput.classList.remove("attention-placeholder");
+  pathPhoneInput.value = formatUsPhone(pathPhoneInput.value);
+});
+
+chatPhoneInput.addEventListener("input", () => {
+  flagChatContactField(chatPhoneInput, false);
+  chatPhoneInput.value = formatUsPhone(chatPhoneInput.value);
+});
+
+[chatNameInput, chatEmailInput].forEach((field) => {
+  field.addEventListener("input", () => {
+    flagChatContactField(field, false);
+  });
+});
+
+[pathNameInput, pathEmailInput].forEach((field) => {
+  field.addEventListener("input", () => {
+    field.classList.remove("attention-placeholder");
+  });
+});
+
 chatInput.addEventListener("focus", () => {
   chatInput.classList.remove("attention-placeholder");
+});
+
+pathInput.addEventListener("focus", () => {
+  pathInput.classList.remove("attention-placeholder");
 });
 
 chatJumpLinks.forEach((link) => {
@@ -900,7 +1533,14 @@ chatJumpLinks.forEach((link) => {
   });
 });
 
+pathChoiceButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    startPathIntake(button.dataset.intentChoice || "");
+  });
+});
+
 window.addEventListener("pagehide", submitLeadOnExit);
 
+resetHomePageScrollPosition();
 loadMortgageRates();
 askCurrentStep();
